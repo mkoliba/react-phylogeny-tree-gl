@@ -2,12 +2,10 @@ import PhylocanvasGL from '@phylocanvas/phylocanvas.gl';
 import { useCallback, useEffect, useRef } from 'react';
 // import interactionsPlugin from '@mkoliba/phylogeny-tree-plugin-interactions/index';
 
-import { Newick, PhylocanvasProps, Phylocanvas } from '../types/phylogeny-tree';
+import { Newick, PhylocanvasProps, Phylocanvas, Decorate } from '../types/phylogeny-tree';
+import { SubtreeLeafOption } from './useLeafSubtree';
 
-export type Plugins = ((
-  tree: Phylocanvas,
-  decorate: (fnName: string, fn: unknown) => void
-) => void)[];
+export type Plugins = ((tree: Phylocanvas, decorate: Decorate) => void)[];
 export type Hooks = ((getTree: () => Phylocanvas | null, options: PhylocanvasProps) => void)[];
 
 const emptyObject = {};
@@ -25,7 +23,7 @@ export function usePhylogenyTree(
 
   useEffect(() => {
     if (canvasRef.current) {
-      const tree: Phylocanvas = new PhylocanvasGL(
+      const tree: Phylocanvas<SubtreeLeafOption> = new PhylocanvasGL(
         canvasRef.current,
         {
           size: canvasRef.current.parentElement?.getBoundingClientRect(),
@@ -73,7 +71,7 @@ export function usePhylogenyTree(
 
   loopHooks(hooks, getTree, options);
 
-  return { handleZoomIn, handleZoomOut };
+  return { handleZoomIn, handleZoomOut, getTree };
 }
 
 export const loopHooks = (hooks, getInstance, options) => {

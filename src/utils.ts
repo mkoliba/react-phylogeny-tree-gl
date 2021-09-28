@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
 
-import { Phylocanvas, TreeNode, LeafNode, InnerNode, RootNode } from './types/phylogeny-tree';
+import { Phylocanvas, TreeNode } from './types/phylogeny-tree';
 
 export function setRootNLevelsUp(
   tree: Phylocanvas,
@@ -39,16 +39,11 @@ export function useGetLatest<T>(obj: T): () => T {
 
 export const EmptyArray = [];
 
-export function getNodeLeafOffspringsIDs(node: LeafNode): string;
-export function getNodeLeafOffspringsIDs(node: InnerNode | RootNode): string[]
-export function getNodeLeafOffspringsIDs(node): string |string[] {
-  if ('children' in node) {
-    const leafIDs = node.children.reduce((acc, child) => {
-      const ids = getNodeLeafOffspringsIDs(child);
-      if (Array.isArray(ids)) return [...acc, ...ids];
-      return [...acc, ids];
-    }, []);
-    return leafIDs;
-  }
-  return node.id;
+export function getNodeLeafOffspringsIDs(node: TreeNode): string[] {
+  if (node.isLeaf) return [node.id];
+  const leafIDs = node.children.reduce((acc, child) => {
+    const ids = getNodeLeafOffspringsIDs(child);
+    return [...acc, ...ids];
+  }, []);
+  return leafIDs;
 }

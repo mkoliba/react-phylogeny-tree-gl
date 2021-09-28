@@ -1,6 +1,6 @@
-import { createOnRedrawReRootTreePlugin } from './createOnRedrawReRootTree';
-import { createOnSelectPlugin } from './createOnSelect';
-import { createOnViewSubtreePlugin } from './createOnViewSubtree';
+import { createOnRedrawReRootTreePlugin } from './createPluginOnRedrawReRootTree';
+import { createOnSelectPlugin } from './createPluginOnSelect';
+import { createOnViewSubtreePlugin } from './createPluginOnViewSubtree';
 import { onClickHighlightOffsprings } from './onClickHighlightOffsprings';
 
 export {

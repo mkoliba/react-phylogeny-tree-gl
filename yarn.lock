@@ -429,10 +429,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@phylocanvas/phylocanvas.gl@1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@phylocanvas/phylocanvas.gl/-/phylocanvas.gl-1.10.0.tgz#f45d367f65b22004cecb0fa270e9748930ead81b"
-  integrity sha512-q2ewSGvhL7p8BduaWORSJD7Mk9Oq7O7QGou0GmHo1qp0cGwSLfNFxzbHqLnLnXVcwJwXuYlIGgV8pv2dbWq/qQ==
+"@phylocanvas/phylocanvas.gl@1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@phylocanvas/phylocanvas.gl/-/phylocanvas.gl-1.11.0.tgz#d903a01f249c8f770aba2260b8cead8c545b40fb"
+  integrity sha512-HwNgV5Z/rPmjBlSa5/NtyrWVdIzl/MBv8pxdX0JtnidHj3g4DQQPCWrYU/zNMYbIKbfbULnZw+SBR254qHQXqQ==
 
 "@probe.gl/stats@3.4.1", "@probe.gl/stats@^3.4.0":
   version "3.4.1"

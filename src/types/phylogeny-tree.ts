@@ -1,17 +1,34 @@
 export type Newick = string;
 
-export type Decorate = (fnName: string, fn: unknown) => void;
+export type HandleClickArgs = [
+  {
+    layer: { id: string; [key: string]: unknown };
+    object: { node: TreeNode; [key: string]: unknown };
+  },
+  {
+    rightButton: boolean;
+    center: { x: number; y: number };
+    preventDefault: () => void;
+    [key: string]: unknown;
+  }
+];
 
-export type Phylocanvas = {
-  deck: any;
+export type Decorate = <T = unknown>(
+  fnName: string,
+  fn: (delegate: (...args: T[]) => unknown, args: T[]) => unknown
+) => void;
+
+export type Phylocanvas<P = Record<string, unknown>, M = Record<string, unknown>> = {
+  deck: unknown;
   deferred: {
     count: number;
     render: boolean;
   };
-  layers: any[];
+  layers: unknown[];
   view: HTMLDivElement;
-  props: PhylocanvasProps;
-} & Methods;
+  props: P & PhylocanvasProps;
+} & M &
+  Methods;
 
 type RgbaArray = [number, number, number, number];
 type ColumnKey = string;
@@ -24,7 +41,7 @@ export type PhylocanvasProps = Partial<{
   blocks: ColumnKey[];
   branchZoom: number;
   centre: [number, number];
-  collapsedIds: [];
+  collapsedIds: string[];
   edgeOverlapFactor: number;
   fillColour: RgbaArray;
   fontColour: RgbaArray;
@@ -69,8 +86,9 @@ export type PhylocanvasProps = Partial<{
   treeToCanvasRatio: number;
   type: TreeType;
   zoom: number;
-  [key:string]: unknown;
 }>;
+
+export type Layer = { id: string; [key: string]: unknown };
 
 export type Methods = {
   addLayer: (
@@ -165,8 +183,14 @@ export type Methods = {
   isOrthogonal: () => boolean;
   isTreePointOnScreen: (worldPoint: number[], padding?: number) => boolean;
   midpointRoot: () => void;
-  pickNodeAtCanvasPoint: (x:number, y: number) => TreeNode | null;
-  pickNodeFromLayer: ({ layer, object }) => TreeNode | null;
+  pickNodeAtCanvasPoint: (x: number, y: number) => TreeNode | null;
+  pickNodeFromLayer: ({
+    layer,
+    object,
+  }: {
+    layer: unknown;
+    object: { node: TreeNode; [key: string]: unknown };
+  }) => TreeNode | null;
   projectPoint: (point: [number, number], optionalScale?: number) => [number, number];
   render: () => void;
   rerootNode: (nodeOrId: TreeNode | string) => void;
@@ -183,12 +207,14 @@ export type Methods = {
   setStepZoom: (stepZoom: number, screenPoint?: [number, number]) => void;
   setTooltip: (text) => void;
   setTreeType: (type: TreeType) => void;
-  setView: (newView: Partial<{
-    maxZoom: number;
-    minZoom: number;
-    centre: [number, number];
-    zoom: number;
-  }>) => void;
+  setView: (
+    newView: Partial<{
+      maxZoom: number;
+      minZoom: number;
+      centre: [number, number];
+      zoom: number;
+    }>
+  ) => void;
   setZoom: (e) => void;
   suspend: () => void;
   unprojectPoint: (canvasPoint: [number, number]) => [number, number];
@@ -266,7 +292,7 @@ export type CommonNodeProps = {
   inverted: boolean;
   isCollapsed: boolean;
   isHidden: boolean;
-  
+
   postIndex: number;
   preIndex: number;
   totalLeaves: number;

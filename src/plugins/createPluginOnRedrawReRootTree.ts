@@ -1,10 +1,10 @@
-import { Phylocanvas } from '../types/phylogeny-tree';
+import { Phylocanvas, Decorate } from '../types/phylogeny-tree';
 
 export function createOnRedrawReRootTreePlugin(
   onRedrawReRootTree: (tree: Phylocanvas, leafsInTree: string[]) => void
 ) {
   // redraw original tree/re-root tree
-  return function (tree: Phylocanvas, decorate) {
+  return function onRedrawReRootTreePlugin(tree: Phylocanvas, decorate: Decorate) {
     decorate('setSource', (delegate, args) => {
       delegate(...args);
       if (tree) {
