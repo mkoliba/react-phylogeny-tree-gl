@@ -1,9 +1,11 @@
 import { Phylocanvas, TreeNode } from '../../types/phylogeny-tree';
+import { getNodeLeafOffspringsIDs } from '../../utils';
+import { download, createBlobURL } from './fileDownload';
 
 export type TreeMenuItems = {
-  label: string | ((tree: Phylocanvas | null) => string);
-  visible?: (tree: Phylocanvas | null) => boolean;
-  handler: (tree: Phylocanvas | null) => void;
+  label: string | ((tree: Phylocanvas) => string);
+  visible?: (tree: Phylocanvas) => boolean;
+  handler: (tree: Phylocanvas) => void;
 }[][];
 
 export const treeMenuItems: TreeMenuItems = [
@@ -22,6 +24,42 @@ export const treeMenuItems: TreeMenuItems = [
       handler: (tree) => tree?.setSource(tree.getGraphWithoutLayout().originalSource),
     },
   ],
+  [
+    {
+      label: 'Export leaf labels',
+      handler: (tree) => {
+        const leafs = tree.getGraphAfterLayout().leaves.map((value) => value.label || value.id);
+        download(createBlobURL(leafs.join('\n')), 'leaf_labels.txt');
+      },
+    },
+    {
+      label: 'Export selected labels',
+      handler: (tree) => {
+        const leafs = tree.props.selectedIds || [];
+        download(createBlobURL(leafs.join('\n')), 'leaf_labels.txt');
+      },
+      visible: (tree) => Boolean(tree.props.selectedIds && tree.props.selectedIds.length > 0),
+    },
+    {
+      label: 'Export as newick file',
+      handler: (tree) => download(createBlobURL(tree.exportNewick()), 'phylogeny_tree.nwk'),
+    },
+    {
+      label: 'Export as image',
+      handler: (tree) => {
+        download(tree.exportPNG() as string, 'phylogeny_tree.png');
+      },
+    },
+    // {
+    //   label: 'Export as SVG',
+    //   handler: (tree) => {
+    //     download(
+    //       (window.URL || window.webkitURL).createObjectURL(tree.exportSVG()),
+    //       'phylogeny_tree.svg'
+    //     );
+    //   },
+    // },
+  ],
 ];
 
 export type NodeMenuItems = {
@@ -37,6 +75,7 @@ export const nodeMenuItems: NodeMenuItems = [
         tree?.props.collapsedIds?.indexOf(node.id) || -1 === -1
           ? 'Collapse subtree'
           : 'Expand subtree',
+
       handler: (tree, node) => tree.collapseNode(node),
     },
     {
@@ -53,6 +92,20 @@ export const nodeMenuItems: NodeMenuItems = [
     {
       label: 'Re-root tree',
       handler: (tree, node) => tree.rerootNode(node),
+    },
+  ],
+  [
+    {
+      label: 'Export subtree leaf labels',
+      handler: (tree, node) => {
+        const ids = getNodeLeafOffspringsIDs(node).join('\n');
+        download(createBlobURL(ids), 'leaf_labels.txt');
+      },
+    },
+    {
+      label: 'Export subtree as newick file',
+      handler: (tree, node) =>
+        download(createBlobURL(tree.exportNewick(node)), 'phylogeny_tree.nwk'),
     },
   ],
 ];

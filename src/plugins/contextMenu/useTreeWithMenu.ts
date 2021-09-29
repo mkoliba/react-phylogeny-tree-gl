@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Plugins, Hooks, usePhylogenyTree } from '../../hooks/usePhylogenyTree';
-import { TreeNode, PhylocanvasProps } from '../../types/phylogeny-tree';
+import { TreeNode, PhylocanvasProps, Phylocanvas } from '../../types/phylogeny-tree';
 import { createContextMenuPlugin } from '../contextMenu/createContextMenuPlugin';
 import { nodeMenuItems, treeMenuItems } from './menuItems';
 
@@ -70,8 +70,13 @@ function reducer(state: State, action: { updater: Partial<State> }) {
   };
 }
 
-function useGetMenuItems(node, getTree, closeMenu) {
-  const menuGroup = node ? nodeMenuItems : treeMenuItems;
+function useGetMenuItems(
+  node: TreeNode | undefined,
+  getTree: () => Phylocanvas | null,
+  closeMenu: () => void
+) {
+  const menuGroup = node && !node.isLeaf ? nodeMenuItems : treeMenuItems;
+
   return React.useMemo(() => {
     return menuGroup.map((group) => {
       return group.map(({ label, handler, visible }) => {
@@ -79,17 +84,17 @@ function useGetMenuItems(node, getTree, closeMenu) {
           typeof visible === 'function'
             ? () => {
                 const tree = getTree();
-                if (tree) return visible(tree, node);
+                if (tree) return visible(tree, node as TreeNode);
                 return false;
               }
             : visible;
-        const text = typeof label === 'string' ? label : label(getTree(), node);
+        const text = typeof label === 'string' ? label : label(getTree(), node as TreeNode);
         return {
           label: text,
           onClick: (e) => {
             e.preventDefault();
             const tree = getTree();
-            if (tree) handler(tree, node);
+            if (tree) handler(tree, node as TreeNode);
             closeMenu();
           },
           visible: isVisible,
