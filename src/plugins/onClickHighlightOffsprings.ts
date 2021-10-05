@@ -1,4 +1,4 @@
-import { Phylocanvas, Decorate, TreeNode } from '../types/phylogeny-tree';
+import { Phylocanvas, Decorate, TreeNode } from '../types/phylocanvas.gl';
 import { getNodeLeafOffspringsIDs } from '../utils';
 
 export function onClickHighlightOffsprings(tree: Phylocanvas, decorate: Decorate) {

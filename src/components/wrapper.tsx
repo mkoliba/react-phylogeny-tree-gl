@@ -2,15 +2,15 @@ import React from 'react';
 
 import { Plugins, Hooks } from '../hooks/usePhylogenyTree';
 import { usePhylocanvasWithMenu } from '../plugins/contextMenu/useTreeWithMenu';
-import { Newick, PhylocanvasProps } from '../types/phylogeny-tree';
+import { Newick, PhylocanvasProps } from '../types/phylocanvas.gl';
 import { ContextMenu } from './contextMenu';
 import { ZoomButtons } from './zoom_buttons';
 
-type TreeProps = {
+type TreeProps<P, M> = {
   newick: Newick;
-  options?: PhylocanvasProps;
-  plugins?: Plugins;
-  hooks?: Hooks;
+  options?: P & PhylocanvasProps;
+  plugins?: Plugins<P, M>;
+  hooks?: Hooks<P, M>;
   zoom?: boolean;
   zoomStyle?: React.CSSProperties;
 };
@@ -19,16 +19,16 @@ const handleContextMenu = (event) => {
   event.preventDefault();
 };
 
-export function PhylogenyTree({
+export function PhylogenyTree<P, M>({
   newick,
   options,
   plugins,
   hooks,
   zoom = true,
   zoomStyle,
-}: TreeProps): JSX.Element {
+}: TreeProps<P, M>): JSX.Element {
   const { phyloDiv, handleZoomIn, handleZoomOut, menuItems, visible, possition, onClose } =
-    usePhylocanvasWithMenu(newick, options, plugins, hooks);
+    usePhylocanvasWithMenu<P, M>(newick, options, plugins, hooks);
 
   return (
     <div

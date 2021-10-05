@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Plugins, Hooks, usePhylogenyTree } from '../../hooks/usePhylogenyTree';
-import { TreeNode, PhylocanvasProps, Phylocanvas } from '../../types/phylogeny-tree';
+import { TreeNode, PhylocanvasProps, Phylocanvas } from '../../types/phylocanvas.gl';
 import { createContextMenuPlugin } from '../contextMenu/createContextMenuPlugin';
 import { nodeMenuItems, treeMenuItems } from './menuItems';
 
@@ -17,11 +17,11 @@ const initialState: State = {
   node: undefined,
 };
 
-export function usePhylocanvasWithMenu(
+export function usePhylocanvasWithMenu<P, M>(
   newick: string,
-  options?: PhylocanvasProps,
-  plugins?: Plugins,
-  hooks?: Hooks
+  options?: P & PhylocanvasProps,
+  plugins?: Plugins<P, M>,
+  hooks?: Hooks<P, M>
 ) {
   const [{ possition, visible, node }, dispatch] = React.useReducer(reducer, initialState);
 
@@ -38,7 +38,7 @@ export function usePhylocanvasWithMenu(
     return plugins;
   }, [plugins, options?.interactive]);
 
-  const { handleZoomIn, handleZoomOut, getTree } = usePhylogenyTree(
+  const { handleZoomIn, handleZoomOut, getTree } = usePhylogenyTree<P, M>(
     newick,
     phyloDiv,
     options,

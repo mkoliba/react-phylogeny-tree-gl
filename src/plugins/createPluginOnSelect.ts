@@ -1,4 +1,4 @@
-import { Phylocanvas } from '../types/phylogeny-tree';
+import { Phylocanvas } from '../types/phylocanvas.gl';
 import { EmptyArray } from '../utils';
 
 export function createOnSelectPlugin(onSelect: (tree: Phylocanvas, selectedIds: string[]) => void) {

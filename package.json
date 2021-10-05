@@ -1,6 +1,6 @@
 {
   "name": "react-phylogeny-tree.gl",
-  "version": "0.0.4",
+  "version": "0.0.1",
   "description": "React component for phylogenetic tree visualistion based on phylocanvas.gl",
   "author": "Martin Koliba",
   "license": "MIT",
@@ -22,11 +22,11 @@
   },
   "exports": {
     ".": "./lib/index.js",
-    "./plugins": "./lib/plugins",
-    "./hooks": "./lib/hooks",
-    "./css": "./lib/css",
-    "./css/zoom.css": "./lib/css/zoom.css",
-    "./utils": "./lib/utils.js"
+    "./plugins/": "./lib/plugins/",
+    "./hooks/": "./lib/hooks/",
+    "./css/": "./lib/css/",
+    "./utils": "./lib/utils.js",
+    "./types/": "./lib/"
   },
   "types": "lib",
   "typesVersions": {
@@ -39,6 +39,9 @@
       ],
       "utils": [
         "lib/utils.d.ts"
+      ],
+      "types": [
+        "lib/types"
       ]
     }
   },

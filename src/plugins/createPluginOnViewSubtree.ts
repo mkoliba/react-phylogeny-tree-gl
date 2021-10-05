@@ -1,4 +1,4 @@
-import { Phylocanvas, Decorate, TreeNode } from '../types/phylogeny-tree';
+import { Phylocanvas, Decorate, TreeNode } from '../types/phylocanvas.gl';
 
 export function createOnViewSubtreePlugin(
   onViewSubtree: (tree: Phylocanvas, leafsInSubtree: string[]) => void

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Phylocanvas } from '../types/phylogeny-tree';
+import { Phylocanvas } from '../types/phylocanvas.gl';
 import { setRootNLevelsUp } from '../utils';
 
 export type SubtreeLeafOption = {

@@ -1,4 +1,4 @@
-import { Phylocanvas, Decorate } from '../types/phylogeny-tree';
+import { Phylocanvas, Decorate } from '../types/phylocanvas.gl';
 
 export function createOnRedrawReRootTreePlugin(
   onRedrawReRootTree: (tree: Phylocanvas, leafsInTree: string[]) => void

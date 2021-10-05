@@ -1,4 +1,4 @@
-import { Phylocanvas, TreeNode } from '../../types/phylogeny-tree';
+import { Phylocanvas, TreeNode } from '../../types/phylocanvas.gl';
 import { getNodeLeafOffspringsIDs } from '../../utils';
 import { download, createBlobURL } from './fileDownload';
 

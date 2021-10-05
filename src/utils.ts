@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
 
-import { Phylocanvas, TreeNode } from './types/phylogeny-tree';
+import { Phylocanvas, TreeNode } from './types/phylocanvas.gl';
 
 export function setRootNLevelsUp(
   tree: Phylocanvas,

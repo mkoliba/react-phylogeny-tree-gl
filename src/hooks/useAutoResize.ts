@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Phylocanvas } from '../types/phylogeny-tree';
+import { Phylocanvas } from '../types/phylocanvas.gl';
 
 export function useAutoResize(getTree: () => Phylocanvas | null) {
   useEffect(() => {

@@ -28,7 +28,7 @@ export type Phylocanvas<P = Record<string, unknown>, M = Record<string, unknown>
   view: HTMLDivElement;
   props: P & PhylocanvasProps;
 } & M &
-  Methods;
+  Methods<P>;
 
 type RgbaArray = [number, number, number, number];
 type ColumnKey = string;
@@ -86,11 +86,12 @@ export type PhylocanvasProps = Partial<{
   treeToCanvasRatio: number;
   type: TreeType;
   zoom: number;
+  [key: string]: unknown;
 }>;
 
 export type Layer = { id: string; [key: string]: unknown };
 
-export type Methods = {
+export type Methods<P> = {
   addLayer: (
     layerId,
     visiblePredicate,
@@ -106,7 +107,7 @@ export type Methods = {
   descendingNodeOrder: () => void;
   destroy: () => void;
   exportJSON: (space, replacer) => string;
-  exportNewick: (nodeOrId?: TreeNode | string , options?) => string;
+  exportNewick: (nodeOrId?: TreeNode | string, options?) => string;
   exportPNG: () => unknown;
   exportSVG: () => Blob;
   findNodeById: (nodeOrId?: TreeNode | string) => TreeNode | undefined;
@@ -200,8 +201,8 @@ export type Methods = {
   selectLeafNodes: (ids: string[], append?: boolean) => void;
   selectNode: (nodeOrId?: TreeNode | string, append?: boolean) => void;
   setBranchZoom: (branchZoom: number, screenPoint?: [number, number]) => void;
-  setProps: (updater: PhylocanvasProps) => void;
-  setRoot: (nodeOrId?: TreeNode | string, props?: PhylocanvasProps) => void;
+  setProps: (updater: PhylocanvasProps & P) => void;
+  setRoot: (nodeOrId?: TreeNode | string, props?: PhylocanvasProps & P) => void;
   setScale: (scale: number, screenPoint?: [number, number]) => void;
   setSource: (data: string, original?: string) => void;
   setStepZoom: (stepZoom: number, screenPoint?: [number, number]) => void;

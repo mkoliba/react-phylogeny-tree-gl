@@ -1,4 +1,4 @@
-import { Phylocanvas, Decorate, HandleClickArgs } from '../../types/phylogeny-tree';
+import { Phylocanvas, Decorate, HandleClickArgs } from '../../types/phylocanvas.gl';
 
 export function createContextMenuPlugin(setMenuProps) {
   return function contextMenuPlugin(tree: Phylocanvas, decorate: Decorate) {

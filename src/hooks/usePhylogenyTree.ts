@@ -2,28 +2,29 @@ import PhylocanvasGL from '@phylocanvas/phylocanvas.gl';
 import { useCallback, useEffect, useRef } from 'react';
 // import interactionsPlugin from '@mkoliba/phylogeny-tree-plugin-interactions/index';
 
-import { Newick, PhylocanvasProps, Phylocanvas, Decorate } from '../types/phylogeny-tree';
-import { SubtreeLeafOption } from './useLeafSubtree';
+import { Newick, PhylocanvasProps, Phylocanvas, Decorate } from '../types/phylocanvas.gl';
 
-export type Plugins = ((tree: Phylocanvas, decorate: Decorate) => void)[];
-export type Hooks = ((getTree: () => Phylocanvas | null, options: PhylocanvasProps) => void)[];
+export type Plugins<P, M> = ((tree: Phylocanvas<P, M>, decorate: Decorate) => void)[];
+export type Hooks<P, M> = ((
+  getTree: () => Phylocanvas<P, M> | null,
+  options: P & PhylocanvasProps
+) => void)[];
 
-const emptyObject = {};
 const emptyArray = [];
 
-export function usePhylogenyTree(
+export function usePhylogenyTree<P, M>(
   newick: Newick,
   canvasRef: React.MutableRefObject<HTMLDivElement | null>,
-  options: PhylocanvasProps = emptyObject,
-  plugins: Plugins = emptyArray,
-  hooks: Hooks = emptyArray
+  options?: P & PhylocanvasProps,
+  plugins: Plugins<P, M> = emptyArray,
+  hooks: Hooks<P, M> = emptyArray
 ) {
-  const treeInstance = useRef<Phylocanvas | null>(null);
-  const getTree = useCallback<() => Phylocanvas | null>(() => treeInstance.current, []);
+  const treeInstance = useRef<Phylocanvas<P, M> | null>(null);
+  const getTree = useCallback<() => Phylocanvas<P, M> | null>(() => treeInstance.current, []);
 
   useEffect(() => {
     if (canvasRef.current) {
-      const tree: Phylocanvas<SubtreeLeafOption> = new PhylocanvasGL(
+      const tree: Phylocanvas<P, M> = new PhylocanvasGL(
         canvasRef.current,
         {
           size: canvasRef.current.parentElement?.getBoundingClientRect(),
@@ -43,7 +44,7 @@ export function usePhylogenyTree(
 
   useEffect(() => {
     const tree = getTree();
-    if (tree) {
+    if (tree && options) {
       tree.setProps(options);
     }
   }, [options, getTree]);
