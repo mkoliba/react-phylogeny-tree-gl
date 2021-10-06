@@ -1,4 +1,22 @@
 export type Newick = string;
+export type Source =
+  | Newick
+  | {
+      type: 'newick';
+      data: Newick;
+      original?: Source;
+    }
+  | {
+      type: 'biojs';
+      data: BiojsTree;
+      original?: Source;
+    };
+
+export type BiojsTree = {
+  children: BiojsTree[];
+  name: string | number;
+  branch_length: number;
+};
 
 export type HandleClickArgs = [
   {
@@ -26,7 +44,7 @@ export type Phylocanvas<P = Record<string, unknown>, M = Record<string, unknown>
   };
   layers: unknown[];
   view: HTMLDivElement;
-  props: P & PhylocanvasProps;
+  props: P & { source: Source } & PhylocanvasProps;
 } & M &
   Methods<P>;
 
@@ -34,6 +52,7 @@ type RgbaArray = [number, number, number, number];
 type ColumnKey = string;
 
 export type PhylocanvasProps = Partial<{
+  source: Source;
   alignLabels: boolean;
   blockHeaderFontSize: number;
   blockLength: number;
@@ -204,7 +223,7 @@ export type Methods<P> = {
   setProps: (updater: PhylocanvasProps & P) => void;
   setRoot: (nodeOrId?: TreeNode | string, props?: PhylocanvasProps & P) => void;
   setScale: (scale: number, screenPoint?: [number, number]) => void;
-  setSource: (data: string, original?: string) => void;
+  setSource: (data: Source, original?: string) => void;
   setStepZoom: (stepZoom: number, screenPoint?: [number, number]) => void;
   setTooltip: (text) => void;
   setTreeType: (type: TreeType) => void;
@@ -230,11 +249,11 @@ type GraphWithoutLayout = {
   lastIndex: number;
   leaves: LeafNode[];
   originalRoot: RootNode;
-  originalSource: string;
+  originalSource: Source;
   postorderTraversal: TreeNode[];
   preorderTraversal: TreeNode[];
   root: RootNode;
-  source: Newick;
+  source: Source;
 };
 
 type GraphWithLayout = {
