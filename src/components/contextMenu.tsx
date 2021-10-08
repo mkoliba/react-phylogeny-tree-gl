@@ -1,44 +1,97 @@
 import React from 'react';
 
+import { treeMenuItems, nodeMenuItems } from '../plugins/contextMenu/menuItems';
+import { TreeNode, Phylocanvas } from '../types/phylocanvas.gl';
 import { ModalContainer } from './modalContainer';
 
-type MenuItems = { label: string; onClick?: (event) => void; visible?: () => boolean }[];
-
-type MenuProps = {
-  menuGroups: MenuItems[];
-  possition?: { x: number; y: number };
-  showMenu?: boolean;
+type ContextMenuProps = {
+  node?: TreeNode;
+  getTree: () => Phylocanvas;
+  possition?: {
+    x: number;
+    y: number;
+  };
   onCloseRequest?: () => void;
 };
 
 export function ContextMenu({
-  menuGroups,
   possition,
-  showMenu = true,
+  node,
+  getTree,
   onCloseRequest,
-}: MenuProps): JSX.Element {
+}: ContextMenuProps): JSX.Element {
+  const menuItems = node && !node.isLeaf ? nodeMenuItems : treeMenuItems;
   return (
     <ModalContainer
       style={{
         left: possition?.x,
         top: possition?.y,
-        display: showMenu ? 'block' : 'none',
         zIndex: 1,
       }}
       onCloseRequest={onCloseRequest}
     >
-      {menuGroups.map((group, index) => (
+      {menuItems.map((menuGroup, index) => (
         <ul key={index}>
-          {group.map(({ label, visible, onClick }, index) => {
-            const isVisible = visible ? visible() : true;
-            return isVisible ? (
-              <li className="react-phylogeny-tree-conext-menu-item" key={index} onClick={onClick}>
-                {label}
-              </li>
-            ) : null;
+          {menuGroup.map(({ label, handler, visible, isActive }) => {
+            const tree = getTree();
+            if (visible ? visible(tree) : true) {
+              const text = typeof label === 'string' ? label : label(getTree(), node);
+              return typeof isActive === 'function' ? (
+                <ToggleItem
+                  key={text}
+                  text={text}
+                  isActive={isActive}
+                  tree={tree}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const tree = getTree();
+                    if (tree) handler(tree, node);
+                  }}
+                />
+              ) : (
+                <MenuItem
+                  key={text}
+                  text={text}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const tree = getTree();
+                    if (tree) handler(tree, node);
+                    if (onCloseRequest) onCloseRequest();
+                  }}
+                />
+              );
+            }
+            return;
           })}
         </ul>
       ))}
     </ModalContainer>
+  );
+}
+
+type MenuItemProps = { text: string; onClick: (e) => void };
+export function MenuItem({ text, onClick }: MenuItemProps): JSX.Element {
+  return (
+    <li className="react-phylogeny-tree-conext-menu-item" onClick={onClick}>
+      {text}
+    </li>
+  );
+}
+
+export function ToggleItem({ text, isActive, tree, onClick }): JSX.Element {
+  const [active, setActive] = React.useState(isActive(tree));
+  const toggleClass = active ? 'is-active' : '';
+
+  return (
+    <li
+      className="react-phylogeny-tree-context-menu-has-toggle"
+      onClick={(e) => {
+        onClick(e);
+        setActive(isActive(tree));
+      }}
+    >
+      {text}
+      <span className={`react-phylogeny-tree-context-menu-toggle ${toggleClass}`}></span>
+    </li>
   );
 }

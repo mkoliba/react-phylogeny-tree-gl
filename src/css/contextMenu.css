@@ -46,3 +46,42 @@
 .react-phylogeny-tree-conext-menu > ul + ul {
   border-top: 1px solid #e0e0e0;
 }
+
+li.react-phylogeny-tree-context-menu-has-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  outline: none;
+}
+
+.react-phylogeny-tree-context-menu-toggle {
+  width: 24px;
+  height: 12px;
+  margin-right: 4px;
+  border-radius: 12px;
+  background: #dbdbdb;
+  position: relative;
+}
+
+.react-phylogeny-tree-context-menu-toggle::before {
+  content: '';
+  height: 20px;
+  width: 20px;
+  margin-left: -8px;
+  background: #b8b8b8;
+  box-sizing: border-box;
+  position: absolute;
+  border-radius: 50%;
+  top: -4px;
+  transition-property: transform;
+  transition: 0.28s cubic-bezier(.4,0,.2,1);
+}
+
+.react-phylogeny-tree-context-menu-toggle.is-active {
+  background: rgba(60, 115, 131, 0.54);
+}
+
+.react-phylogeny-tree-context-menu-toggle.is-active::before {
+  transform: translateX(20px);
+  background: #3c7383;
+}

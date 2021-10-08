@@ -22,11 +22,11 @@
   },
   "exports": {
     ".": "./lib/index.js",
-    "./plugins/": "./lib/plugins/",
-    "./hooks/": "./lib/hooks/",
+    "./plugins": "./lib/plugins",
+    "./hooks": "./lib/hooks",
     "./css/": "./lib/css/",
     "./utils": "./lib/utils.js",
-    "./types/": "./lib/"
+    "./types/": "./lib/types/"
   },
   "types": "lib",
   "typesVersions": {

@@ -1,14 +1,44 @@
-import { Phylocanvas, TreeNode } from '../../types/phylocanvas.gl';
+import { Phylocanvas, TreeNode, RootNode, InnerNode } from '../../types/phylocanvas.gl';
 import { getNodeLeafOffspringsIDs } from '../../utils';
 import { download, createBlobURL } from './fileDownload';
 
-export type TreeMenuItems = {
+export type TreeMenuItem = {
   label: string | ((tree: Phylocanvas) => string);
   visible?: (tree: Phylocanvas) => boolean;
   handler: (tree: Phylocanvas) => void;
-}[][];
+  isActive: undefined;
+};
+export type ToggleMenuItem = {
+  label: string | ((tree: Phylocanvas) => string);
+  handler: (tree: Phylocanvas) => void;
+  visible?: (tree: Phylocanvas) => boolean;
+  isActive?: (tree: Phylocanvas) => boolean;
+};
+
+export type NodeMenuItem = {
+  label: string | ((tree: Phylocanvas, node: TreeNode) => string);
+  handler: (tree: Phylocanvas, node: RootNode | InnerNode) => void;
+  visible?: (tree: Phylocanvas) => boolean;
+  isActive?: undefined;
+};
+
+export type TreeMenuItems = (TreeMenuItem | ToggleMenuItem)[][];
+export type NodeMenuItems = NodeMenuItem[][];
 
 export const treeMenuItems: TreeMenuItems = [
+  [
+    {
+      label: 'Show labels',
+      handler: (tree) => {
+        const current = Boolean(tree.props.showLabels && tree.props.showLeafLabels);
+        tree.setProps({
+          showLabels: !current,
+          showLeafLabels: !current,
+        });
+      },
+      isActive: (tree) => Boolean(tree.props.showLabels && tree.props.showLeafLabels),
+    },
+  ],
   [
     {
       label: 'Fit in panel',
@@ -62,19 +92,14 @@ export const treeMenuItems: TreeMenuItems = [
   ],
 ];
 
-export type NodeMenuItems = {
-  label: string | ((tree: Phylocanvas | null, node: TreeNode) => string);
-  handler: (tree: Phylocanvas, node: TreeNode) => void;
-  visible?: (tree: Phylocanvas | null, node: TreeNode) => boolean;
-}[][];
-
 export const nodeMenuItems: NodeMenuItems = [
   [
     {
-      label: (tree, node) =>
-        tree?.props.collapsedIds?.indexOf(node.id) || -1 === -1
+      label: (tree, node) => {
+        return tree.props.collapsedIds === undefined || tree.props.collapsedIds?.indexOf(node.id) === -1
           ? 'Collapse subtree'
-          : 'Expand subtree',
+          : 'Expand subtree';
+      },
 
       handler: (tree, node) => tree.collapseNode(node),
     },

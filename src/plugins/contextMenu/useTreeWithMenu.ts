@@ -1,17 +1,16 @@
 import React from 'react';
 
 import { Plugins, Hooks, usePhylogenyTree } from '../../hooks/usePhylogenyTree';
-import { TreeNode, PhylocanvasProps, Phylocanvas } from '../../types/phylocanvas.gl';
+import { TreeNode, PhylocanvasProps } from '../../types/phylocanvas.gl';
 import { createContextMenuPlugin } from '../contextMenu/createContextMenuPlugin';
-import { nodeMenuItems, treeMenuItems } from './menuItems';
 
-type State = {
+export type MenuState = {
   possition?: { x: number; y: number };
   visible: boolean;
   node?: TreeNode;
 };
 
-const initialState: State = {
+const initialState: MenuState = {
   possition: undefined,
   visible: false,
   node: undefined,
@@ -23,7 +22,7 @@ export function usePhylocanvasWithMenu<P, M>(
   plugins?: Plugins<P, M>,
   hooks?: Hooks<P, M>
 ) {
-  const [{ possition, visible, node }, dispatch] = React.useReducer(reducer, initialState);
+  const [menuState, dispatch] = React.useReducer(reducer, initialState);
 
   const phyloDiv = React.useRef<HTMLDivElement | null>(null);
 
@@ -50,56 +49,19 @@ export function usePhylocanvasWithMenu<P, M>(
     dispatch({ updater: initialState });
   }, [dispatch]);
 
-  const menuItems = useGetMenuItems(node, getTree, closeMenu);
-
   return {
     phyloDiv,
     handleZoomIn,
     handleZoomOut,
-    menuItems,
-    visible,
-    possition,
+    getTree,
+    menuState,
     onClose: closeMenu,
   };
 }
 
-function reducer(state: State, action: { updater: Partial<State> }) {
+function reducer(state: MenuState, action: { updater: Partial<MenuState> }) {
   return {
     ...state,
     ...action.updater,
   };
-}
-
-function useGetMenuItems(
-  node: TreeNode | undefined,
-  getTree: () => Phylocanvas | null,
-  closeMenu: () => void
-) {
-  const menuGroup = node && !node.isLeaf ? nodeMenuItems : treeMenuItems;
-
-  return React.useMemo(() => {
-    return menuGroup.map((group) => {
-      return group.map(({ label, handler, visible }) => {
-        const isVisible =
-          typeof visible === 'function'
-            ? () => {
-                const tree = getTree();
-                if (tree) return visible(tree, node as TreeNode);
-                return false;
-              }
-            : visible;
-        const text = typeof label === 'string' ? label : label(getTree(), node as TreeNode);
-        return {
-          label: text,
-          onClick: (e) => {
-            e.preventDefault();
-            const tree = getTree();
-            if (tree) handler(tree, node as TreeNode);
-            closeMenu();
-          },
-          visible: isVisible,
-        };
-      });
-    });
-  }, [closeMenu, getTree, menuGroup, node]);
 }
