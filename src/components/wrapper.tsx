@@ -32,7 +32,7 @@ export function PhylogenyTree<P, M>({
 
   return (
     <div
-      style={{ width: '100%', height: '100%', position: 'relative' }}
+      style={{ width: '100%', height: '100%', position: 'absolute' }}
       onContextMenu={handleContextMenu}
     >
       <div ref={phyloDiv} />
