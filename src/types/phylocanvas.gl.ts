@@ -105,7 +105,6 @@ export type PhylocanvasProps = Partial<{
   treeToCanvasRatio: number;
   type: TreeType;
   zoom: number;
-  [key: string]: unknown;
 }>;
 
 export type Layer = { id: string; [key: string]: unknown };
