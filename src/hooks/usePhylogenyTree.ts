@@ -1,14 +1,8 @@
 import PhylocanvasGL from '@phylocanvas/phylocanvas.gl';
 import { useCallback, useEffect, useRef } from 'react';
-// import interactionsPlugin from '@mkoliba/phylogeny-tree-plugin-interactions/index';
 
-import { Newick, PhylocanvasProps, Phylocanvas, Decorate } from '../types/phylocanvas.gl';
-
-export type Plugins<P, M> = ((tree: Phylocanvas<P, M>, decorate: Decorate) => void)[];
-export type Hooks<P, M> = ((
-  getTree: () => Phylocanvas<P, M> | null,
-  options: P & PhylocanvasProps
-) => void)[];
+import { Newick, PhylocanvasProps, Phylocanvas, Plugins } from '../types/phylocanvas.gl';
+import { Hooks } from '../types/react-phylogeny-tree';
 
 const emptyArray = [];
 

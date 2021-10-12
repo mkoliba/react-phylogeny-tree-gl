@@ -96,7 +96,8 @@ export const nodeMenuItems: NodeMenuItems = [
   [
     {
       label: (tree, node) => {
-        return tree.props.collapsedIds === undefined || tree.props.collapsedIds?.indexOf(node.id) === -1
+        return tree.props.collapsedIds === undefined ||
+          tree.props.collapsedIds?.indexOf(node.id) === -1
           ? 'Collapse subtree'
           : 'Expand subtree';
       },

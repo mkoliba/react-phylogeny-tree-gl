@@ -74,7 +74,7 @@ li.react-phylogeny-tree-context-menu-has-toggle {
   border-radius: 50%;
   top: -4px;
   transition-property: transform;
-  transition: 0.28s cubic-bezier(.4,0,.2,1);
+  transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .react-phylogeny-tree-context-menu-toggle.is-active {

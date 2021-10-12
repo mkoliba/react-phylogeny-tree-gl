@@ -18,23 +18,12 @@ export type BiojsTree = {
   branch_length: number;
 };
 
-export type HandleClickArgs = [
-  {
-    layer: { id: string; [key: string]: unknown };
-    object: { node: TreeNode; [key: string]: unknown };
-  },
-  {
-    rightButton: boolean;
-    center: { x: number; y: number };
-    preventDefault: () => void;
-    [key: string]: unknown;
-  }
-];
-
 export type Decorate = <T = unknown>(
   fnName: string,
   fn: (delegate: (...args: T[]) => unknown, args: T[]) => unknown
 ) => void;
+
+export type Plugins<P, M> = ((tree: Phylocanvas<P, M>, decorate: Decorate) => void)[];
 
 export type Phylocanvas<P = Record<string, unknown>, M = Record<string, unknown>> = {
   deck: unknown;
@@ -239,6 +228,19 @@ export type Methods<P> = {
   unprojectPoint: (canvasPoint: [number, number]) => [number, number];
   constructor: () => void;
 };
+
+export type HandleClickArgs = [
+  {
+    layer: { id: string; [key: string]: unknown };
+    object: { node: TreeNode; [key: string]: unknown };
+  },
+  {
+    rightButton: boolean;
+    center: { x: number; y: number };
+    preventDefault: () => void;
+    [key: string]: unknown;
+  }
+];
 
 type GraphWithoutLayout = {
   firstIndex: number;
