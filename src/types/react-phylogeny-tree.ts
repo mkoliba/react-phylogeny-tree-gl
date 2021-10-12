@@ -1,15 +1,14 @@
-import { Newick, PhylocanvasProps, Plugins, Phylocanvas } from './phylocanvas.gl';
+import { PhylocanvasInitProps, PhylocanvasProps, Plugins, Phylocanvas } from './phylocanvas.gl';
 
-export type TreeProps<P, M> = {
-  newick: Newick;
-  options?: P & PhylocanvasProps;
+export type TreeProps<P extends PhylocanvasInitProps, M> = {
+  props: P;
   plugins?: Plugins<P, M>;
   hooks?: Hooks<P, M>;
   zoom?: boolean;
   zoomStyle?: React.CSSProperties;
 };
 
-export type Hooks<P, M> = ((
+export type Hooks<P extends PhylocanvasInitProps, M> = ((
   getTree: () => Phylocanvas<P, M> | null,
-  options: P & PhylocanvasProps
+  props: P & PhylocanvasProps
 ) => void)[];

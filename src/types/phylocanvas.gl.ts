@@ -1,4 +1,9 @@
 export type Newick = string;
+export type BiojsTree = {
+  children: BiojsTree[];
+  name: string | number;
+  branch_length: number;
+};
 export type Source =
   | Newick
   | {
@@ -12,20 +17,12 @@ export type Source =
       original?: Source;
     };
 
-export type BiojsTree = {
-  children: BiojsTree[];
-  name: string | number;
-  branch_length: number;
-};
-
 export type Decorate = <T = unknown>(
   fnName: string,
   fn: (delegate: (...args: T[]) => unknown, args: T[]) => unknown
 ) => void;
 
-export type Plugins<P, M> = ((tree: Phylocanvas<P, M>, decorate: Decorate) => void)[];
-
-export type Phylocanvas<P = Record<string, unknown>, M = Record<string, unknown>> = {
+export type Phylocanvas<P = PhylocanvasProps, M = Record<string, unknown>> = {
   deck: unknown;
   deferred: {
     count: number;
@@ -35,11 +32,14 @@ export type Phylocanvas<P = Record<string, unknown>, M = Record<string, unknown>
   view: HTMLDivElement;
   props: P & { source: Source } & PhylocanvasProps;
 } & M &
-  Methods<P>;
+  Methods<Partial<P>>;
+
+export type Plugins<P, M> = ((tree: Phylocanvas<P, M>, decorate: Decorate) => void)[];
 
 type RgbaArray = [number, number, number, number];
 type ColumnKey = string;
 
+export type PhylocanvasInitProps = { source: Source } & PhylocanvasProps;
 export type PhylocanvasProps = Partial<{
   source: Source;
   alignLabels: boolean;
@@ -98,7 +98,7 @@ export type PhylocanvasProps = Partial<{
 
 export type Layer = { id: string; [key: string]: unknown };
 
-export type Methods<P> = {
+export type Methods<Props extends PhylocanvasProps> = {
   addLayer: (
     layerId,
     visiblePredicate,
@@ -208,8 +208,8 @@ export type Methods<P> = {
   selectLeafNodes: (ids: string[], append?: boolean) => void;
   selectNode: (nodeOrId?: TreeNode | string, append?: boolean) => void;
   setBranchZoom: (branchZoom: number, screenPoint?: [number, number]) => void;
-  setProps: (updater: PhylocanvasProps & P) => void;
-  setRoot: (nodeOrId?: TreeNode | string, props?: PhylocanvasProps & P) => void;
+  setProps: (updater: Props) => void;
+  setRoot: (nodeOrId?: TreeNode | string, props?: Props) => void;
   setScale: (scale: number, screenPoint?: [number, number]) => void;
   setSource: (data: Source, original?: string) => void;
   setStepZoom: (stepZoom: number, screenPoint?: [number, number]) => void;

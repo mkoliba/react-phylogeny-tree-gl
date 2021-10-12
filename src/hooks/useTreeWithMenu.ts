@@ -2,7 +2,7 @@ import React from 'react';
 
 import { usePhylogenyTree } from '../hooks/usePhylogenyTree';
 import { createContextMenuPlugin } from '../plugins/contextMenu/createContextMenuPlugin';
-import { TreeNode, PhylocanvasProps, Plugins } from '../types/phylocanvas.gl';
+import { TreeNode, PhylocanvasInitProps, Plugins } from '../types/phylocanvas.gl';
 import { Hooks } from '../types/react-phylogeny-tree';
 
 export type MenuState = {
@@ -17,9 +17,8 @@ const initialState: MenuState = {
   node: undefined,
 };
 
-export function usePhylogenyTreeWithMenu<P, M>(
-  newick: string,
-  options?: P & PhylocanvasProps,
+export function usePhylogenyTreeWithMenu<P extends PhylocanvasInitProps, M>(
+  props: P,
   plugins?: Plugins<P, M>,
   hooks?: Hooks<P, M>
 ) {
@@ -28,7 +27,7 @@ export function usePhylogenyTreeWithMenu<P, M>(
   const phyloDiv = React.useRef<HTMLDivElement | null>(null);
 
   const pluginsWithMenu = React.useMemo(() => {
-    if (plugins && options?.interactive)
+    if (plugins && props?.interactive)
       return [
         ...plugins,
         createContextMenuPlugin((updater) => {
@@ -36,12 +35,11 @@ export function usePhylogenyTreeWithMenu<P, M>(
         }),
       ];
     return plugins;
-  }, [plugins, options?.interactive]);
+  }, [plugins, props?.interactive]);
 
   const { handleZoomIn, handleZoomOut, getTree } = usePhylogenyTree<P, M>(
-    newick,
     phyloDiv,
-    options,
+    props,
     pluginsWithMenu,
     hooks
   );

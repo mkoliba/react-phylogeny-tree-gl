@@ -1,15 +1,14 @@
 import PhylocanvasGL from '@phylocanvas/phylocanvas.gl';
 import { useCallback, useEffect, useRef } from 'react';
 
-import { Newick, PhylocanvasProps, Phylocanvas, Plugins } from '../types/phylocanvas.gl';
+import { PhylocanvasInitProps, Phylocanvas, Plugins } from '../types/phylocanvas.gl';
 import { Hooks } from '../types/react-phylogeny-tree';
 
 const emptyArray = [];
 
-export function usePhylogenyTree<P, M>(
-  newick: Newick,
+export function usePhylogenyTree<P extends PhylocanvasInitProps, M>(
   canvasRef: React.MutableRefObject<HTMLDivElement | null>,
-  options?: P & PhylocanvasProps,
+  props?: P,
   plugins: Plugins<P, M> = emptyArray,
   hooks: Hooks<P, M> = emptyArray
 ) {
@@ -22,8 +21,7 @@ export function usePhylogenyTree<P, M>(
         canvasRef.current,
         {
           size: canvasRef.current.parentElement?.getBoundingClientRect(),
-          source: newick,
-          ...options,
+          ...props,
         },
         plugins
       );
@@ -34,14 +32,14 @@ export function usePhylogenyTree<P, M>(
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newick, plugins, canvasRef]);
+  }, [plugins, canvasRef]);
 
   useEffect(() => {
     const tree = getTree();
-    if (tree && options) {
-      tree.setProps(options);
+    if (tree && props) {
+      tree.setProps(props);
     }
-  }, [options, getTree]);
+  }, [props, getTree]);
 
   const zoomFactor = 0.2;
   const handleZoomIn = useCallback(() => {
@@ -64,14 +62,14 @@ export function usePhylogenyTree<P, M>(
     }
   }, [getTree]);
 
-  loopHooks(hooks, getTree, options);
+  loopHooks(hooks, getTree, props);
 
   return { handleZoomIn, handleZoomOut, getTree };
 }
 
-export const loopHooks = (hooks, getInstance, options) => {
+export const loopHooks = (hooks, getInstance, props) => {
   hooks.forEach((hook) => {
-    const nextValue = hook(getInstance, options);
+    const nextValue = hook(getInstance, props);
     if (process && process.env.NODE_ENV === 'development')
       if (typeof nextValue !== 'undefined') {
         throw new Error(

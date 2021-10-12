@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { usePhylogenyTreeWithMenu } from '../hooks/useTreeWithMenu';
-import { Phylocanvas } from '../types/phylocanvas.gl';
+import { Phylocanvas, PhylocanvasInitProps } from '../types/phylocanvas.gl';
 import { TreeProps } from '../types/react-phylogeny-tree';
 import { ContextMenu } from './contextMenu';
 import { ZoomButtons } from './zoom_buttons';
@@ -12,16 +12,15 @@ const handleContextMenu = (event) => {
 
 const wrapperStyle: React.CSSProperties = { width: '100%', height: '100%', position: 'absolute' };
 
-export function PhylogenyTree<P, M>({
-  newick,
-  options,
+export function PhylogenyTree<P extends PhylocanvasInitProps & Record<string, unknown>, M>({
+  props,
   plugins,
   hooks,
   zoom = true,
   zoomStyle,
 }: TreeProps<P, M>): JSX.Element {
   const { phyloDiv, handleZoomIn, handleZoomOut, menuState, getTree, onClose } =
-    usePhylogenyTreeWithMenu<P, M>(newick, options, plugins, hooks);
+    usePhylogenyTreeWithMenu<P, M>(props, plugins, hooks);
 
   return (
     <div style={wrapperStyle} onContextMenu={handleContextMenu}>
@@ -29,7 +28,7 @@ export function PhylogenyTree<P, M>({
       {zoom ? (
         <ZoomButtons onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} style={zoomStyle} />
       ) : null}
-      {options?.interactive && menuState.visible && getTree !== null ? (
+      {props?.interactive && menuState.visible && getTree !== null ? (
         <ContextMenu
           possition={menuState.possition}
           node={menuState.node}
