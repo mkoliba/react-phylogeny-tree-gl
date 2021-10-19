@@ -59,10 +59,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@phylocanvas/phylocanvas.gl@^1.11.0":
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@phylocanvas/phylocanvas.gl/-/phylocanvas.gl-1.11.0.tgz#d903a01f249c8f770aba2260b8cead8c545b40fb"
-  integrity sha512-HwNgV5Z/rPmjBlSa5/NtyrWVdIzl/MBv8pxdX0JtnidHj3g4DQQPCWrYU/zNMYbIKbfbULnZw+SBR254qHQXqQ==
+"@phylocanvas/phylocanvas.gl@^1.12.0":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@phylocanvas/phylocanvas.gl/-/phylocanvas.gl-1.12.0.tgz#a785a267ca5a2fab8ff4e8952c899ddc9a290593"
+  integrity sha512-Tb0yHEt89JzkzW5wOr1kxaKmW8hwcSWygkbm6WDDq/oBwFPdRR3vHCAHK6mYRokMWidMPuEkbl4eEefB+nH4Ag==
 
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
