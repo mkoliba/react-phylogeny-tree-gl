@@ -1,18 +1,14 @@
 import React from 'react';
 
+import { MenuState } from '../hooks/useTreeWithMenu';
 import { treeMenuItems, nodeMenuItems } from '../plugins/contextMenu/menuItems';
-import { TreeNode, Phylocanvas } from '../types/phylocanvas.gl';
+import { Phylocanvas } from '../types/phylocanvas.gl';
 import { ModalContainer } from './modalContainer';
 
 type ContextMenuProps = {
-  node?: TreeNode;
   getTree: () => Phylocanvas;
-  possition?: {
-    x: number;
-    y: number;
-  };
   onCloseRequest?: () => void;
-};
+} & Pick<MenuState, 'possition' | 'node'>;
 
 export function ContextMenu({
   possition,

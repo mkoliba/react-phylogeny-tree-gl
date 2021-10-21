@@ -1,14 +1,15 @@
 import PhylocanvasGL from '@phylocanvas/phylocanvas.gl';
 import { useCallback, useEffect, useRef } from 'react';
 
-import { PhylocanvasInitProps, Phylocanvas, Plugins } from '../types/phylocanvas.gl';
+import { PhylocanvasProps, Phylocanvas, Plugins, Source } from '../types/phylocanvas.gl';
 import { Hooks } from '../types/react-phylogeny-tree';
 
 const emptyArray = [];
 
-export function usePhylogenyTree<P extends PhylocanvasInitProps, M>(
+export function usePhylogenyTree<P extends PhylocanvasProps, M>(
   canvasRef: React.MutableRefObject<HTMLDivElement | null>,
-  props?: P,
+  source: Source,
+  props: P,
   plugins: Plugins<P, M> = emptyArray,
   hooks: Hooks<P, M> = emptyArray
 ) {
@@ -21,6 +22,7 @@ export function usePhylogenyTree<P extends PhylocanvasInitProps, M>(
         canvasRef.current,
         {
           size: canvasRef.current.parentElement?.getBoundingClientRect(),
+          source,
           ...props,
         },
         plugins
@@ -32,7 +34,7 @@ export function usePhylogenyTree<P extends PhylocanvasInitProps, M>(
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plugins, canvasRef]);
+  }, [source, plugins, canvasRef]);
 
   useEffect(() => {
     const tree = getTree();

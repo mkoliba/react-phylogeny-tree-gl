@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { usePhylogenyTreeWithMenu } from '../hooks/useTreeWithMenu';
-import { Phylocanvas, PhylocanvasInitProps } from '../types/phylocanvas.gl';
+import { Phylocanvas, PhylocanvasProps } from '../types/phylocanvas.gl';
 import { TreeProps } from '../types/react-phylogeny-tree';
 import { ContextMenu } from './contextMenu';
 import { ZoomButtons } from './zoom_buttons';
@@ -12,7 +12,8 @@ const handleContextMenu = (event) => {
 
 const wrapperStyle: React.CSSProperties = { width: '100%', height: '100%', position: 'absolute' };
 
-export function PhylogenyTree<P extends PhylocanvasInitProps & Record<string, unknown>, M>({
+export function PhylogenyTree<P extends PhylocanvasProps & Record<string, unknown>, M>({
+  source,
   props,
   plugins,
   hooks,
@@ -20,7 +21,7 @@ export function PhylogenyTree<P extends PhylocanvasInitProps & Record<string, un
   zoomStyle,
 }: TreeProps<P, M>): JSX.Element {
   const { phyloDiv, handleZoomIn, handleZoomOut, menuState, getTree, onClose } =
-    usePhylogenyTreeWithMenu<P, M>(props, plugins, hooks);
+    usePhylogenyTreeWithMenu<P, M>(source, props, plugins, hooks);
 
   return (
     <div style={wrapperStyle} onContextMenu={handleContextMenu}>

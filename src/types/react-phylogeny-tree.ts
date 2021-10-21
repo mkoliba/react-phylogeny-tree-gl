@@ -1,6 +1,7 @@
-import { PhylocanvasInitProps, PhylocanvasProps, Plugins, Phylocanvas } from './phylocanvas.gl';
+import { Source, PhylocanvasProps, Plugins, Phylocanvas } from './phylocanvas.gl';
 
-export type TreeProps<P extends PhylocanvasInitProps, M> = {
+export type TreeProps<P extends PhylocanvasProps, M> = {
+  source: Source;
   props: P;
   plugins?: Plugins<P, M>;
   hooks?: Hooks<P, M>;
@@ -8,7 +9,7 @@ export type TreeProps<P extends PhylocanvasInitProps, M> = {
   zoomStyle?: React.CSSProperties;
 };
 
-export type Hooks<P extends PhylocanvasInitProps, M> = ((
+export type Hooks<P extends PhylocanvasProps, M> = ((
   getTree: () => Phylocanvas<P, M> | null,
   props: P & PhylocanvasProps
 ) => void)[];

@@ -1,13 +1,14 @@
 import React from 'react';
 
 import { usePhylogenyTree } from '../hooks/usePhylogenyTree';
-import { PhylocanvasInitProps } from '../types/phylocanvas.gl';
+import { PhylocanvasProps } from '../types/phylocanvas.gl';
 import { TreeProps } from '../types/react-phylogeny-tree';
 import { ZoomButtons } from './zoom_buttons';
 
 const wrapperStyle: React.CSSProperties = { width: '100%', height: '100%', position: 'absolute' };
 
-export function PhylogenyTreeWithoutMenu<P extends PhylocanvasInitProps, M>({
+export function PhylogenyTreeWithoutMenu<P extends PhylocanvasProps, M>({
+  source,
   props,
   plugins,
   hooks,
@@ -16,7 +17,13 @@ export function PhylogenyTreeWithoutMenu<P extends PhylocanvasInitProps, M>({
 }: TreeProps<P, M>): JSX.Element {
   const phyloDiv = React.useRef<HTMLDivElement | null>(null);
 
-  const { handleZoomIn, handleZoomOut } = usePhylogenyTree<P, M>(phyloDiv, props, plugins, hooks);
+  const { handleZoomIn, handleZoomOut } = usePhylogenyTree<P, M>(
+    phyloDiv,
+    source,
+    props,
+    plugins,
+    hooks
+  );
 
   return (
     <div style={wrapperStyle}>
