@@ -5,17 +5,17 @@ import { treeMenuItems, nodeMenuItems } from '../plugins/contextMenu/menuItems';
 import { Phylocanvas } from '../types/phylocanvas.gl';
 import { ModalContainer } from './modalContainer';
 
-type ContextMenuProps = {
-  getTree: () => Phylocanvas;
+type ContextMenuProps<P extends Record<string, unknown>, M> = {
+  getTree: () => Phylocanvas<P, M>;
   onCloseRequest?: () => void;
 } & Pick<MenuState, 'possition' | 'node'>;
 
-export function ContextMenu({
+export function ContextMenu<P extends Record<string, unknown>, M>({
   possition,
   node,
   getTree,
   onCloseRequest,
-}: ContextMenuProps): JSX.Element {
+}: ContextMenuProps<P, M>): JSX.Element {
   const menuItems = node && !node.isLeaf ? nodeMenuItems : treeMenuItems;
   return (
     <ModalContainer

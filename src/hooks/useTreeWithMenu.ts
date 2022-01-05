@@ -2,7 +2,7 @@ import React from 'react';
 
 import { usePhylogenyTree } from '../hooks/usePhylogenyTree';
 import { createContextMenuPlugin } from '../plugins/contextMenu/createContextMenuPlugin';
-import { TreeNode, PhylocanvasProps, Plugins, Source } from '../types/phylocanvas.gl';
+import { TreeNode, Plugins, Source } from '../types/phylocanvas.gl';
 import { Hooks } from '../types/react-phylogeny-tree';
 
 export type MenuState = {
@@ -17,7 +17,7 @@ const initialState: MenuState = {
   node: undefined,
 };
 
-export function usePhylogenyTreeWithMenu<P extends PhylocanvasProps, M>(
+export function usePhylogenyTreeWithMenu<P extends Record<string, unknown>, M>(
   source: Source,
   props: P,
   plugins?: Plugins<P, M>,

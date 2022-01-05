@@ -22,7 +22,10 @@ export type Decorate = <T = unknown>(
   fn: (delegate: (...args: T[]) => unknown, args: T[]) => unknown
 ) => void;
 
-export type Phylocanvas<P = PhylocanvasProps, M = Record<string, unknown>> = {
+export type Phylocanvas<
+  P extends Record<string, unknown> = Record<string, unknown>,
+  M = Record<string, unknown>
+> = {
   deck: unknown;
   deferred: {
     count: number;
@@ -30,11 +33,14 @@ export type Phylocanvas<P = PhylocanvasProps, M = Record<string, unknown>> = {
   };
   layers: unknown[];
   view: HTMLDivElement;
-  props: P & { source: Source } & PhylocanvasProps;
+  props: Readonly<P & PhylocanvasProps & { source: Source }>;
 } & M &
-  Methods<Partial<P>>;
+  PhylocanvasMethods<P>;
 
-export type Plugins<P, M> = ((tree: Phylocanvas<P, M>, decorate: Decorate) => void)[];
+export type Plugins<P extends Record<string, unknown>, M> = ((
+  tree: Phylocanvas<P, M>,
+  decorate: Decorate
+) => void)[];
 
 type RgbaArray = [number, number, number, number];
 type ColumnKey = string;
@@ -98,7 +104,10 @@ export type PhylocanvasProps = Partial<{
 
 export type Layer = { id: string; [key: string]: unknown };
 
-export type Methods<Props extends PhylocanvasProps> = {
+export type PhylocanvasMethods<
+  P extends Record<string, unknown> = Record<string, unknown>,
+  Props = Partial<P> & PhylocanvasProps
+> = {
   addLayer: (
     layerId,
     visiblePredicate,
@@ -208,7 +217,7 @@ export type Methods<Props extends PhylocanvasProps> = {
   selectLeafNodes: (ids: string[], append?: boolean) => void;
   selectNode: (nodeOrId?: TreeNode | string, append?: boolean) => void;
   setBranchZoom: (branchZoom: number, screenPoint?: [number, number]) => void;
-  setProps: (updater: Props) => void;
+  setProps: (updater: Props, eventOrigin?: string) => void;
   setRoot: (nodeOrId?: TreeNode | string, props?: Props) => void;
   setScale: (scale: number, screenPoint?: [number, number]) => void;
   setSource: (data: Source, original?: string) => void;
