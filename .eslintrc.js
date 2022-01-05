@@ -99,7 +99,7 @@ module.exports = {
     '@typescript-eslint/no-confusing-non-null-assertion': 'error',
     '@typescript-eslint/no-unused-vars': [
       'error',
-      { ignoreRestSiblings: true, argsIgnorePattern: '^_' },
+      { ignoreRestSiblings: true, varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
     '@typescript-eslint/no-non-null-assertion': 'error',
   },
