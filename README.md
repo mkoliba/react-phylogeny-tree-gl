@@ -25,8 +25,8 @@ Props:
 - `plugins`: array of phylocanvas.gl plugins, viz section Plugins bellow
   - should be memoized, if changes phylogeny-tree instance is reinitialised
 - `hooks`: array of hooks, viz section Hooks bellow
-- `zoom`: boolean, when `interactive` and `zoom` are `true` buttons for zoom appears.
-- `zoomStyle`: `CSSProperties` object passed to zoom buttons container.
+- `zoomButtons`: boolean, when `interactive` and `zoomButtons` are `true` buttons for zoom appears.
+- `zoomButtonsStyle`: `CSSProperties` object passed to zoom buttons container.
 
 ## Plugins
 

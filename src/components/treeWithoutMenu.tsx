@@ -12,8 +12,8 @@ export function PhylogenyTreeWithoutMenu<P extends PhylocanvasProps, M>({
   props,
   plugins,
   hooks,
-  zoom = true,
-  zoomStyle,
+  zoomButtons = true,
+  zoomButtonsStyle,
 }: TreeProps<P, M>): JSX.Element {
   const phyloDiv = React.useRef<HTMLDivElement | null>(null);
 
@@ -28,8 +28,8 @@ export function PhylogenyTreeWithoutMenu<P extends PhylocanvasProps, M>({
   return (
     <div style={wrapperStyle}>
       <div ref={phyloDiv} />
-      {zoom ? (
-        <ZoomButtons onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} style={zoomStyle} />
+      {zoomButtons ? (
+        <ZoomButtons onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} style={zoomButtonsStyle} />
       ) : null}
     </div>
   );

@@ -5,8 +5,8 @@ export type TreeProps<P extends PhylocanvasProps, M> = {
   props: P;
   plugins?: Plugins<P, M>;
   hooks?: Hooks<P, M>;
-  zoom?: boolean;
-  zoomStyle?: React.CSSProperties;
+  zoomButtons?: boolean;
+  zoomButtonsStyle?: React.CSSProperties;
 };
 
 export type Hooks<P extends PhylocanvasProps, M> = ((

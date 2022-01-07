@@ -17,8 +17,8 @@ export function PhylogenyTree<P extends PhylocanvasProps & Record<string, unknow
   props,
   plugins,
   hooks,
-  zoom = true,
-  zoomStyle,
+  zoomButtons = true,
+  zoomButtonsStyle,
 }: TreeProps<P, M>): JSX.Element {
   const { phyloDiv, handleZoomIn, handleZoomOut, menuState, getTree, onClose } =
     usePhylogenyTreeWithMenu<P, M>(source, props, plugins, hooks);
@@ -26,8 +26,8 @@ export function PhylogenyTree<P extends PhylocanvasProps & Record<string, unknow
   return (
     <div style={wrapperStyle} onContextMenu={handleContextMenu}>
       <div ref={phyloDiv} />
-      {zoom ? (
-        <ZoomButtons onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} style={zoomStyle} />
+      {zoomButtons ? (
+        <ZoomButtons onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} style={zoomButtonsStyle} />
       ) : null}
       {props?.interactive && menuState.visible && getTree !== null ? (
         <ContextMenu
