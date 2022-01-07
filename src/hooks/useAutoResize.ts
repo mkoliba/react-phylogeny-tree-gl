@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 
-import { Phylocanvas } from '../types/phylocanvas.gl';
+import { PhylocanvasProps } from '../types/phylocanvas.gl';
+import { GetTree } from '../types/react-phylogeny-tree';
 
-export function useAutoResize(getTree: () => Phylocanvas | null) {
+export function useAutoResize<P extends PhylocanvasProps, M>(getTree: GetTree<P, M>) {
   useEffect(() => {
     // console.log('useAutoResize2', getTree());
     function updateWidthAndHeight() {

@@ -10,6 +10,11 @@ export type TreeProps<P extends PhylocanvasProps, M> = {
 };
 
 export type Hooks<P extends PhylocanvasProps, M> = ((
-  getTree: () => Phylocanvas<P, M> | null,
+  getTree: GetTree<P, M>,
   props: P & PhylocanvasProps
 ) => void)[];
+
+export type GetTree<
+  P extends Record<string, unknown> = PhylocanvasProps,
+  M = Record<string, unknown>
+> = () => Phylocanvas<P, M> | null;

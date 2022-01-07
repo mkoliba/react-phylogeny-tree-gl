@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Phylocanvas } from '../types/phylocanvas.gl';
+import { GetTree } from '../types/react-phylogeny-tree';
 import { setRootNLevelsUp } from '../utils';
 
 export type SubtreeLeafOption = {
@@ -13,7 +13,7 @@ export type SubtreeLeafOption = {
 };
 
 export function useLeafSubtree(
-  getTree: () => Phylocanvas | null,
+  getTree: GetTree,
   { leafSubtree: { leafID, noLevels, minLeafToRootLength, setLeafLabels } }: SubtreeLeafOption
 ) {
   useEffect(() => {
