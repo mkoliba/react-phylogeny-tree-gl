@@ -19,6 +19,9 @@ export type GetTree<
   M = Record<string, unknown>
 > = () => Phylocanvas<P, M> | null;
 
-export type PhylogenyTreeRef<P extends PhylocanvasProps = PhylocanvasProps, M = Record<string, unknown>> = {
+export type PhylogenyTreeRef<
+  P extends PhylocanvasProps = PhylocanvasProps,
+  M = Record<string, unknown>
+> = {
   getTree: GetTree<P, M>;
 };
