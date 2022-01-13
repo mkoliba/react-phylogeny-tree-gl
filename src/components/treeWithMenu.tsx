@@ -14,7 +14,7 @@ const wrapperStyle: React.CSSProperties = { width: '100%', height: '100%', posit
 
 function TreeWithMenu<P extends PhylocanvasProps & Record<string, unknown>, M>(
   { source, props, plugins, hooks, zoomButtons = true, zoomButtonsStyle }: TreeProps<P, M>,
-  ref: React.Ref<PhylogenyTreeRef<P,M>>
+  ref: React.Ref<PhylogenyTreeRef<P, M>>
 ): JSX.Element {
   const { phyloDiv, handleZoomIn, handleZoomOut, menuState, getTree, onClose } =
     usePhylogenyTreeWithMenu<P, M>(source, props, plugins, hooks);
