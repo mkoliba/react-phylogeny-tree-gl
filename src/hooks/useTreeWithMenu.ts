@@ -2,8 +2,8 @@ import React from 'react';
 
 import { usePhylogenyTree } from '../hooks/usePhylogenyTree';
 import { createContextMenuPlugin } from '../plugins/contextMenu/createContextMenuPlugin';
-import { TreeNode, Plugins, Source } from '../types/phylocanvas.gl';
-import { Hooks } from '../types/react-phylogeny-tree';
+import { TreeNode, Plugins } from '../types/phylocanvas.gl';
+import { Hooks, Props, InitProps } from '../types/react-phylogeny-tree';
 
 export type MenuState = {
   possition?: { x: number; y: number } | undefined;
@@ -17,18 +17,18 @@ const initialState: MenuState = {
   node: undefined,
 };
 
-export function usePhylogenyTreeWithMenu<P extends Record<string, unknown>, M>(
-  source: Source,
-  props: P,
-  plugins?: Plugins<P, M>,
-  hooks?: Hooks<P, M>
+export function usePhylogenyTreeWithMenu<IP extends InitProps<CP>, CP extends Props, M>(
+  initProps: IP,
+  controlledProps: CP | undefined,
+  plugins?: Plugins<IP & CP, M>,
+  hooks?: Hooks<IP & CP, M>
 ) {
   const [menuState, dispatch] = React.useReducer(reducer, initialState);
 
-  const phyloDiv = React.useRef<HTMLDivElement | null>(null);
+  const phyloDiv = React.useRef<HTMLDivElement>(null);
 
   const pluginsWithMenu = React.useMemo(() => {
-    if (plugins && props?.interactive)
+    if (plugins && initProps?.interactive)
       return [
         ...plugins,
         createContextMenuPlugin((updater) => {
@@ -36,12 +36,12 @@ export function usePhylogenyTreeWithMenu<P extends Record<string, unknown>, M>(
         }),
       ];
     return plugins;
-  }, [plugins, props?.interactive]);
+  }, [plugins, initProps?.interactive]);
 
-  const { handleZoomIn, handleZoomOut, getTree } = usePhylogenyTree<P, M>(
+  const { handleZoomIn, handleZoomOut, getTree } = usePhylogenyTree<IP, CP, M>(
     phyloDiv,
-    source,
-    props,
+    initProps,
+    controlledProps,
     pluginsWithMenu,
     hooks
   );

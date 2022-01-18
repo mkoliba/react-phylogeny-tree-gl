@@ -17,13 +17,8 @@ export type Source =
       original?: Source;
     };
 
-export type Decorate = <T = unknown>(
-  fnName: string,
-  fn: (delegate: (...args: T[]) => unknown, args: T[]) => unknown
-) => void;
-
 export type Phylocanvas<
-  P extends Record<string, unknown> = Record<string, unknown>,
+  P extends PhylocanvasInitProps = PhylocanvasInitProps,
   M = Record<string, unknown>
 > = {
   deck: unknown;
@@ -37,7 +32,12 @@ export type Phylocanvas<
 } & M &
   PhylocanvasMethods<P>;
 
-export type Plugins<P extends Record<string, unknown>, M> = ((
+export type Decorate = <T = unknown>(
+  fnName: string,
+  fn: (delegate: (...args: T[]) => unknown, args: T[]) => unknown
+) => void;
+
+export type Plugins<P extends PhylocanvasInitProps, M> = ((
   tree: Phylocanvas<P, M>,
   decorate: Decorate
 ) => void)[];
@@ -105,8 +105,8 @@ export type PhylocanvasProps = Partial<{
 export type Layer = { id: string; [key: string]: unknown };
 
 export type PhylocanvasMethods<
-  P extends Record<string, unknown> = Record<string, unknown>,
-  Props = Partial<P> & PhylocanvasProps
+  P extends PhylocanvasProps = Record<string, unknown>,
+  Props = Partial<P>
 > = {
   addLayer: (
     layerId,

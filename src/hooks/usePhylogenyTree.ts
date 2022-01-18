@@ -1,29 +1,34 @@
 import PhylocanvasGL from '@phylocanvas/phylocanvas.gl';
-import { useCallback, useEffect, useRef } from 'react';
+import React from 'react';
 
-import { PhylocanvasProps, Phylocanvas, Plugins, Source } from '../types/phylocanvas.gl';
-import { Hooks } from '../types/react-phylogeny-tree';
+import type { Phylocanvas, Plugins } from '../types/phylocanvas.gl';
+import type { Hooks, Props, InitProps } from '../types/react-phylogeny-tree';
 
 const emptyArray = [];
 
-export function usePhylogenyTree<P extends PhylocanvasProps, M>(
-  canvasRef: React.MutableRefObject<HTMLDivElement | null>,
-  source: Source,
-  props: P,
-  plugins: Plugins<P, M> = emptyArray,
-  hooks: Hooks<P, M> = emptyArray
+export function usePhylogenyTree<
+  IP extends InitProps<CP>,
+  CP extends Props = Record<string, unknown>,
+  M = Record<string, unknown>
+>(
+  canvasRef: React.RefObject<HTMLDivElement>,
+  initProps: IP,
+  controlledProps?: CP,
+  plugins: Plugins<IP & CP, M> = emptyArray,
+  hooks: Hooks<IP & CP, M> = emptyArray
 ) {
-  const treeInstance = useRef<Phylocanvas<P, M> | null>(null);
-  const getTree = useCallback<() => Phylocanvas<P, M> | null>(() => treeInstance.current, []);
+  type P = IP & CP;
+  const treeInstance = React.useRef<Phylocanvas<P, M> | null>(null);
+  const getTree = React.useCallback<() => Phylocanvas<P, M> | null>(() => treeInstance.current, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (canvasRef.current) {
       const tree: Phylocanvas<P, M> = new PhylocanvasGL(
         canvasRef.current,
         {
           size: canvasRef.current.parentElement?.getBoundingClientRect(),
-          source,
-          ...props,
+          ...initProps,
+          ...controlledProps,
         },
         plugins
       );
@@ -34,17 +39,17 @@ export function usePhylogenyTree<P extends PhylocanvasProps, M>(
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [source, plugins, canvasRef]);
+  }, [initProps, plugins, canvasRef]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const tree = getTree();
-    if (tree && props) {
-      tree.setProps(props);
+    if (tree && controlledProps) {
+      tree.setProps(controlledProps as any);
     }
-  }, [props, getTree]);
+  }, [controlledProps, getTree]);
 
   const zoomFactor = 0.2;
-  const handleZoomIn = useCallback(() => {
+  const handleZoomIn = React.useCallback(() => {
     const tree = getTree();
     if (tree) {
       const { maxZoom, zoom } = tree.getView();
@@ -54,7 +59,7 @@ export function usePhylogenyTree<P extends PhylocanvasProps, M>(
     }
   }, [getTree]);
 
-  const handleZoomOut = useCallback(() => {
+  const handleZoomOut = React.useCallback(() => {
     const tree = getTree();
     if (tree) {
       const { minZoom, zoom } = tree.getView();
@@ -64,7 +69,7 @@ export function usePhylogenyTree<P extends PhylocanvasProps, M>(
     }
   }, [getTree]);
 
-  loopHooks(hooks, getTree, props);
+  loopHooks(hooks, getTree, { ...initProps, ...controlledProps });
 
   return { handleZoomIn, handleZoomOut, getTree };
 }

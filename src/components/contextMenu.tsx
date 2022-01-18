@@ -2,15 +2,16 @@ import React from 'react';
 
 import { MenuState } from '../hooks/useTreeWithMenu';
 import { treeMenuItems, nodeMenuItems } from '../plugins/contextMenu/menuItems';
+import { PhylocanvasInitProps } from '../types/phylocanvas.gl';
 import { GetTree } from '../types/react-phylogeny-tree';
 import { ModalContainer } from './modalContainer';
 
-type ContextMenuProps<P extends Record<string, unknown>, M> = {
+type ContextMenuProps<P extends PhylocanvasInitProps, M> = {
   getTree: GetTree<P, M>;
   onCloseRequest?: () => void;
 } & Pick<MenuState, 'possition' | 'node'>;
 
-export function ContextMenu<P extends Record<string, unknown>, M>({
+export function ContextMenu<P extends PhylocanvasInitProps, M>({
   possition,
   node,
   getTree,

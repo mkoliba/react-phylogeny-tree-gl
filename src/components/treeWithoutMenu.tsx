@@ -1,22 +1,28 @@
 import React from 'react';
 
 import { usePhylogenyTree } from '../hooks/usePhylogenyTree';
-import { PhylocanvasProps } from '../types/phylocanvas.gl';
-import { TreeProps, PhylogenyTreeRef } from '../types/react-phylogeny-tree';
+import { TreeProps, PhylogenyTreeRef, Props, InitProps } from '../types/react-phylogeny-tree';
 import { ZoomButtons } from './zoom_buttons';
 
 const wrapperStyle: React.CSSProperties = { width: '100%', height: '100%', position: 'absolute' };
 
-function TreeWithoutMenu<P extends PhylocanvasProps, M>(
-  { source, props, plugins, hooks, zoomButtons = true, zoomButtonsStyle }: TreeProps<P, M>,
-  ref: React.Ref<PhylogenyTreeRef<P, M>>
+function TreeWithoutMenu<IP extends InitProps<CP>, CP extends Props, M>(
+  {
+    initProps,
+    controlledProps,
+    plugins,
+    hooks,
+    zoomButtons = true,
+    zoomButtonsStyle,
+  }: TreeProps<IP, CP, M>,
+  ref: React.Ref<PhylogenyTreeRef<IP & CP, M>>
 ): JSX.Element {
-  const phyloDiv = React.useRef<HTMLDivElement | null>(null);
+  const phyloDiv = React.useRef<HTMLDivElement>(null);
 
-  const { handleZoomIn, handleZoomOut, getTree } = usePhylogenyTree<P, M>(
+  const { handleZoomIn, handleZoomOut, getTree } = usePhylogenyTree<IP, CP, M>(
     phyloDiv,
-    source,
-    props,
+    initProps,
+    controlledProps,
     plugins,
     hooks
   );
@@ -35,4 +41,10 @@ function TreeWithoutMenu<P extends PhylocanvasProps, M>(
   );
 }
 
-export const PhylogenyTreeWithoutMenu = React.forwardRef(TreeWithoutMenu);
+export const PhylogenyTreeWithoutMenu = React.forwardRef(TreeWithoutMenu) as <
+  IP extends InitProps<CP>,
+  CP extends Props,
+  M
+>(
+  props: TreeProps<IP, CP, M> & { ref?: React.ForwardedRef<PhylogenyTreeRef<IP & CP, M>> }
+) => ReturnType<typeof TreeWithoutMenu>;
