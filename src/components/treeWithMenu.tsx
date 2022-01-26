@@ -3,6 +3,7 @@ import React from 'react';
 import { usePhylogenyTreeWithMenu } from '../hooks/useTreeWithMenu';
 import { TreeProps, PhylogenyTreeRef, Props, InitProps } from '../types/react-phylogeny-tree';
 import { ContextMenu } from './contextMenu';
+import { RedoUndo } from './redoUndo';
 import { ZoomButtons } from './zoom_buttons';
 
 const handleContextMenu = (event) => {
@@ -39,6 +40,8 @@ function TreeWithMenu<
       {zoomButtons ? (
         <ZoomButtons onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} style={zoomButtonsStyle} />
       ) : null}
+
+      <RedoUndo getTree={getTree} />
       {initProps?.interactive && menuState.visible && getTree !== null ? (
         <ContextMenu
           possition={menuState.possition}

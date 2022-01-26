@@ -44,3 +44,36 @@ export type PhylogenyTreeRef<
 > = {
   getTree: GetTree<P, M>;
 };
+
+export type RedoUndoHookedMethodsNames = 'setProps' | 'setRoot' | 'setSource';
+
+export type MethodArgs<M extends RedoUndoHookedMethodsNames> = Parameters<
+  (PhylocanvasMethods & UndoRedoMethods)[M]
+>;
+
+export type StateValue<
+  M extends RedoUndoHookedMethodsNames = RedoUndoHookedMethodsNames,
+  MP extends M = M
+> = {
+  method: M;
+  args: MethodArgs<MP>;
+  props?: Record<string, unknown> | undefined;
+};
+
+export type RedoUndoState = {
+  past: StateValue[];
+  future: StateValue[];
+};
+
+export type UndoRedoProps = {
+  history: RedoUndoState;
+} & PhylocanvasInitProps;
+
+export type UndoRedoMethods = {
+  canUndo: () => boolean;
+  canRedo: () => boolean;
+  undo: () => void;
+  redo: () => void;
+  setSource: (data: Source, original?: Source | undefined, isUndoRedo?: boolean) => void;
+  setRoot: (nodeOrId?: TreeNode | string, props?: Partial<UndoRedoProps>, isUndoRedo?: boolean) => void;
+};

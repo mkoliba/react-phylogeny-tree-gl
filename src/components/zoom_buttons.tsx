@@ -2,7 +2,7 @@ import React from 'react';
 
 export function ZoomButtons({ onZoomIn, onZoomOut, style }): JSX.Element {
   return (
-    <div className="react-phylogeny-tree-ctrl-group" style={style}>
+    <div className="react-phylogeny-tree-ctrl-group react-phylogeny-tree-ctrl-zoom" style={style}>
       <button
         className="react-phylogeny-tree-ctrl-zoom-in"
         type="button"

@@ -138,3 +138,60 @@ li.react-phylogeny-tree-context-menu-has-toggle {
 .react-phylogeny-tree-ctrl-zoom-out .react-phylogeny-tree-ctrl-icon {
   background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='29' height='29' viewBox='0 0 29 29' xmlns='http://www.w3.org/2000/svg' fill='%23333'%3E %3Cpath d='M10 13c-.75 0-1.5.75-1.5 1.5S9.25 16 10 16h9c.75 0 1.5-.75 1.5-1.5S19.75 13 19 13h-9z'/%3E %3C/svg%3E");
 }
+
+/* redo undo */
+
+.react-phylogeny-tree-redo-undo {
+  left: 10px;
+  top: 50px;
+}
+
+.react-phylogeny-tree-redo-undo button {
+  text-align: center;
+}
+
+.react-phylogeny-tree-redo-undo-icon {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: translate(6px);
+  width: 14px;
+  height: 14px;
+  border: 2px solid;
+  
+  border-radius: 100px;
+}
+.react-phylogeny-tree-redo-undo-icon::before {
+  content: '';
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-top: 2px solid;
+  top: -3px;
+}
+
+.react-phylogeny-tree-undo {
+  border-left-color: transparent;
+}
+
+.react-phylogeny-tree-undo::before {
+  border-left: 2px solid;
+  left: -1px;
+  transform: rotate(-68deg);
+}
+
+.react-phylogeny-tree-redo {
+  border-right-color: transparent;
+}
+
+
+.react-phylogeny-tree-redo::before {
+  border-right: 2px solid;
+  right: -1px;
+  transform: rotate(68deg);
+}
+
+
+
