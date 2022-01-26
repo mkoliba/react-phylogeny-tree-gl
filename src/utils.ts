@@ -1,13 +1,11 @@
 import { useCallback, useRef } from 'react';
 
-import { Phylocanvas, TreeNode } from './types/phylocanvas.gl';
+import { Phylocanvas, TreeNode, PhylocanvasInitProps } from './types/phylocanvas.gl';
 
-export function setRootNLevelsUp(
-  tree: Phylocanvas,
-  nodeID: string,
-  noLevels = 6,
-  minLeafToRootLength = 5
-): void {
+export function setRootNLevelsUp<
+  P extends PhylocanvasInitProps,
+  M extends Record<string, (...args: unknown[]) => unknown>
+>(tree: Phylocanvas<P, M>, nodeID: string, noLevels = 6, minLeafToRootLength = 5): void {
   let node: TreeNode | undefined;
   let upLength = 0;
   if (nodeID !== null) {

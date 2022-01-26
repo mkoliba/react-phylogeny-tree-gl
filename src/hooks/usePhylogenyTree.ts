@@ -9,7 +9,7 @@ const emptyArray = [];
 export function usePhylogenyTree<
   IP extends InitProps<CP>,
   CP extends Props = Record<string, unknown>,
-  M = Record<string, unknown>
+  M extends Record<string, (...args: unknown[]) => unknown> = Record<string, never>
 >(
   canvasRef: React.RefObject<HTMLDivElement>,
   initProps: IP,
@@ -20,6 +20,7 @@ export function usePhylogenyTree<
   type P = IP & CP;
   const treeInstance = React.useRef<Phylocanvas<P, M> | null>(null);
   const getTree = React.useCallback<() => Phylocanvas<P, M> | null>(() => treeInstance.current, []);
+  const [, setIsInit] = React.useState(false); // we want to cause rerender when tree is instantiated
 
   React.useEffect(() => {
     if (canvasRef.current) {
@@ -33,18 +34,20 @@ export function usePhylogenyTree<
         plugins
       );
       treeInstance.current = tree;
+      setIsInit(true);
 
       return function cleanUp() {
         tree.destroy();
+        setIsInit(false);
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initProps, plugins, canvasRef]);
+  }, [initProps, plugins, canvasRef]); // we do not want to reinitialise when controlledProps change
 
   React.useEffect(() => {
     const tree = getTree();
     if (tree && controlledProps) {
-      tree.setProps(controlledProps as any);
+      tree.setProps(controlledProps as Partial<P>);
     }
   }, [controlledProps, getTree]);
 

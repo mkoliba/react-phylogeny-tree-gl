@@ -11,7 +11,11 @@ const handleContextMenu = (event) => {
 
 const wrapperStyle: React.CSSProperties = { width: '100%', height: '100%', position: 'absolute' };
 
-function TreeWithMenu<IP extends InitProps<CP>, CP extends Props, M>(
+function TreeWithMenu<
+  IP extends InitProps<CP>,
+  CP extends Props,
+  M extends Record<string, (...args: unknown[]) => unknown> = Record<string, never>
+>(
   {
     initProps,
     controlledProps,
@@ -50,7 +54,7 @@ function TreeWithMenu<IP extends InitProps<CP>, CP extends Props, M>(
 export const PhylogenyTree = React.forwardRef(TreeWithMenu) as <
   IP extends InitProps<CP>,
   CP extends Props,
-  M
+  M extends Record<string, (...args: unknown[]) => unknown>
 >(
   props: TreeProps<IP, CP, M> & { ref?: React.ForwardedRef<PhylogenyTreeRef<IP & CP, M>> }
 ) => ReturnType<typeof TreeWithMenu>;

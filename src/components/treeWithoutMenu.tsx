@@ -6,7 +6,11 @@ import { ZoomButtons } from './zoom_buttons';
 
 const wrapperStyle: React.CSSProperties = { width: '100%', height: '100%', position: 'absolute' };
 
-function TreeWithoutMenu<IP extends InitProps<CP>, CP extends Props, M>(
+function TreeWithoutMenu<
+  IP extends InitProps<CP>,
+  CP extends Props,
+  M extends Record<string, (...args: unknown[]) => unknown>
+>(
   {
     initProps,
     controlledProps,
@@ -44,7 +48,7 @@ function TreeWithoutMenu<IP extends InitProps<CP>, CP extends Props, M>(
 export const PhylogenyTreeWithoutMenu = React.forwardRef(TreeWithoutMenu) as <
   IP extends InitProps<CP>,
   CP extends Props,
-  M
+  M extends Record<string, (...args: unknown[]) => unknown>
 >(
   props: TreeProps<IP, CP, M> & { ref?: React.ForwardedRef<PhylogenyTreeRef<IP & CP, M>> }
 ) => ReturnType<typeof TreeWithoutMenu>;

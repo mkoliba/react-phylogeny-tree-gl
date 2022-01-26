@@ -17,7 +17,11 @@ const initialState: MenuState = {
   node: undefined,
 };
 
-export function usePhylogenyTreeWithMenu<IP extends InitProps<CP>, CP extends Props, M>(
+export function usePhylogenyTreeWithMenu<
+  IP extends InitProps<CP>,
+  CP extends Props,
+  M extends Record<string, (...args: unknown[]) => unknown>
+>(
   initProps: IP,
   controlledProps: CP | undefined,
   plugins?: Plugins<IP & CP, M>,
@@ -28,14 +32,15 @@ export function usePhylogenyTreeWithMenu<IP extends InitProps<CP>, CP extends Pr
   const phyloDiv = React.useRef<HTMLDivElement>(null);
 
   const pluginsWithMenu = React.useMemo(() => {
-    if (plugins && initProps?.interactive)
+    if (plugins && initProps?.interactive) {
       return [
         ...plugins,
         createContextMenuPlugin((updater) => {
           dispatch({ updater });
         }),
       ];
-    return plugins;
+    }
+    return plugins ?? [];
   }, [plugins, initProps?.interactive]);
 
   const { handleZoomIn, handleZoomOut, getTree } = usePhylogenyTree<IP, CP, M>(

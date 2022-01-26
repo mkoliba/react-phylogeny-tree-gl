@@ -19,7 +19,10 @@ export type Source =
 
 export type Phylocanvas<
   P extends PhylocanvasInitProps = PhylocanvasInitProps,
-  M = Record<string, unknown>
+  M extends Record<string, (...args: unknown[]) => unknown> = Record<
+    string,
+    (...args: unknown[]) => unknown
+  >
 > = {
   deck: unknown;
   deferred: {
@@ -32,15 +35,24 @@ export type Phylocanvas<
 } & M &
   PhylocanvasMethods<P>;
 
-export type Decorate = <T = unknown>(
-  fnName: string,
-  fn: (delegate: (...args: T[]) => unknown, args: T[]) => unknown
+export type Decorate<
+  P extends PhylocanvasInitProps = PhylocanvasInitProps,
+  M extends Record<string, (...args: unknown[]) => unknown> = Record<
+    string,
+    (...args: unknown[]) => unknown
+  >
+> = <MethodName extends keyof (M & PhylocanvasMethods<P>)>(
+  fnName: MethodName,
+  fn: (
+    delegate: (M & PhylocanvasMethods<P>)[MethodName],
+    args: Parameters<(PhylocanvasMethods<P> & M)[MethodName]>
+  ) => unknown
 ) => void;
 
-export type Plugins<P extends PhylocanvasInitProps, M> = ((
-  tree: Phylocanvas<P, M>,
-  decorate: Decorate
-) => void)[];
+export type Plugins<
+  P extends PhylocanvasInitProps,
+  M extends Record<string, (...args: unknown[]) => unknown>
+> = ((tree: Phylocanvas<P, M>, decorate: Decorate<P, M>) => void)[];
 
 type RgbaArray = [number, number, number, number];
 type ColumnKey = string;
@@ -108,6 +120,7 @@ export type PhylocanvasMethods<
   P extends PhylocanvasProps = Record<string, unknown>,
   Props = Partial<P>
 > = {
+  init: () => void;
   addLayer: (
     layerId,
     visiblePredicate,
@@ -220,7 +233,7 @@ export type PhylocanvasMethods<
   setProps: (updater: Props, eventOrigin?: string) => void;
   setRoot: (nodeOrId?: TreeNode | string, props?: Props) => void;
   setScale: (scale: number, screenPoint?: [number, number]) => void;
-  setSource: (data: Source, original?: string) => void;
+  setSource: (data: Source, original?: Source) => void;
   setStepZoom: (stepZoom: number, screenPoint?: [number, number]) => void;
   setTooltip: (text) => void;
   setTreeType: (type: TreeType) => void;
@@ -239,11 +252,11 @@ export type PhylocanvasMethods<
 };
 
 export type HandleClickArgs = [
-  {
+  info: {
     layer: { id: string; [key: string]: unknown };
     object: { node: TreeNode; [key: string]: unknown };
   },
-  {
+  event: {
     rightButton: boolean;
     center: { x: number; y: number };
     preventDefault: () => void;
