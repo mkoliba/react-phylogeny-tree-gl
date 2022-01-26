@@ -1,12 +1,6 @@
 import { Defaults } from '@phylocanvas/phylocanvas.gl';
 
-import {
-  Phylocanvas,
-  Decorate,
-  PhylocanvasProps,
-  
-  Source,
-} from '../types/phylocanvas.gl';
+import { Phylocanvas, Decorate, PhylocanvasProps, Source } from '../types/phylocanvas.gl';
 import {
   UndoRedoProps,
   UndoRedoMethods,
@@ -40,13 +34,12 @@ export function createRedoUndoPlugin(trackedProps = defaultTrackedProps) {
           return;
         }
       }
-      
+
       delegate(...args);
     });
 
     decorate('setRoot', (delegate, args) => {
       const [nodeOrId, props, isUndoRedo] = args;
-      
 
       if (isUndoRedo) {
         delegate(nodeOrId, props);
@@ -56,7 +49,7 @@ export function createRedoUndoPlugin(trackedProps = defaultTrackedProps) {
     });
     decorate('setSource', (delegate, args) => {
       const [data, original, isUndoRedo] = args;
-      
+
       if (isUndoRedo) {
         delegate(data, original);
 
@@ -175,7 +168,6 @@ function setPropsWithourRender<
   P extends UndoRedoProps = UndoRedoProps,
   M extends UndoRedoMethods = UndoRedoMethods
 >(tree: Phylocanvas<P, M>, updater: Record<string, unknown>) {
-
   if (updater) {
     const newProps = Object.freeze({
       ...(tree.props as P),
@@ -204,60 +196,6 @@ function getArguments(
   }
   throw Error(`getArguments received arg present.method with unsoported value: ${newVal.method}`);
 }
-
-// function getTrackedProps<>(tree: Phylocanvas, propNames: T[]): {} {
-//   return propNames.reduce((acc, propName) => {
-//     return (acc[propName] = tree.props[propName]);
-//   }, {});
-// }
-
-// function reducer(props: UndoRedoProps & PhylocanvasProps, type: 'undo' | 'redo') {
-//   const { past, future } = props.history;
-//   switch (type) {
-//     case 'undo': {
-//       const previous = past[past.length - 1];
-//       const present = getPresent(props, previous);
-//       const history = {
-//         past: past.slice(0, past.length - 1),
-//         future: [present, ...future],
-//       };
-
-//       const args =
-//       return [
-//         present?.method,
-//         [...present.args]
-//       ]
-//       return {
-//         ...previous,
-//         history,
-//       };
-//     }
-//     case 'redo': {
-//       const next = future[0];
-//       const present = getPresent(props, next);
-//       const history = {
-//         past: [...past, present],
-//         future: future.slice(1),
-//       };
-//       return {
-//         ...next,
-//         history,
-//       };
-//     }
-//   }
-// }
-
-// type MethodArgs<M extends RedoUndoHookedMethodsNames> = Parameters<
-//   PhylocanvasMethods<UndoRedoProps & PhylocanvasProps>[M]
-// >;
-
-// type StateValue<
-//   M extends RedoUndoHookedMethodsNames = RedoUndoHookedMethodsNames,
-//   MP extends M = M
-// > = {
-//   method: M;
-//   args: MethodArgs<MP>;
-// };
 
 function isMethodVal<M extends RedoUndoHookedMethodsNames>(
   methodName: M,
@@ -306,8 +244,6 @@ function getSetRootPresent(
   return [node, presentProps];
 }
 
-// const setSourceProps = ['rootId', 'collapsedIds', 'rotatedIds'] as const;
-// type SetSourceProps = 'rootId'| 'collapsedIds'| 'rotatedIds'
 function getSetSourcePresent(
   props: UndoRedoProps & PhylocanvasProps,
   _args: MethodArgs<'setSource'>
@@ -330,17 +266,3 @@ function pick(obj: Record<string, unknown>, propNames: string[]): Record<string,
     return acc;
   }, {} as Record<string, unknown>);
 }
-
-// type SetPropsArgs = readonly [
-//   updater: Partial<Record<string, unknown>>,
-//   eventOrigin: string | undefined
-// ];
-// type SetRootArgs = readonly [
-//   nodeOrId: string | TreeNode | undefined,
-//   props?: Partial<Record<string, unknown>> | undefined
-// ];
-// type SetSourceArgs = readonly [
-//   data: Source,
-//   original: Source | undefined,
-//   props: Record<string, unknown> | undefined
-// ];

@@ -86,14 +86,13 @@ li.react-phylogeny-tree-context-menu-has-toggle {
   background: #3c7383;
 }
 
-
 /* controls */
 
 .react-phylogeny-tree-ctrl-group {
   border-radius: 4px;
   background: #fff;
   width: fit-content;
-  height: 29px ;
+  height: 29px;
   position: absolute;
 }
 
@@ -158,7 +157,7 @@ li.react-phylogeny-tree-context-menu-has-toggle {
   width: 14px;
   height: 14px;
   border: 2px solid;
-  
+
   border-radius: 100px;
 }
 .react-phylogeny-tree-redo-undo-icon::before {
@@ -186,12 +185,8 @@ li.react-phylogeny-tree-context-menu-has-toggle {
   border-right-color: transparent;
 }
 
-
 .react-phylogeny-tree-redo::before {
   border-right: 2px solid;
   right: -1px;
   transform: rotate(68deg);
 }
-
-
-

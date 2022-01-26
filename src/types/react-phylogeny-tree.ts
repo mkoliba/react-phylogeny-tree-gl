@@ -75,5 +75,9 @@ export type UndoRedoMethods = {
   undo: () => void;
   redo: () => void;
   setSource: (data: Source, original?: Source | undefined, isUndoRedo?: boolean) => void;
-  setRoot: (nodeOrId?: TreeNode | string, props?: Partial<UndoRedoProps>, isUndoRedo?: boolean) => void;
+  setRoot: (
+    nodeOrId?: TreeNode | string,
+    props?: Partial<UndoRedoProps>,
+    isUndoRedo?: boolean
+  ) => void;
 };

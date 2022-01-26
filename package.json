@@ -54,8 +54,8 @@
   "scripts": {
     "clean": "rimraf lib/",
     "copy-files": "copyfiles -f src/*.css lib/",
-    "build": "tsc && yarn copy-files",
-    "prepare": "yarn clean && yarn format && yarn build",
+    "build": "yarn clean && tsc && yarn copy-files",
+    "prepare": "yarn format && yarn build",
     "format": "prettier --write src && eslint src --ext .js,.jsx,.ts,.tsx",
     "watch": "tsc-watch --onSuccess 'yarn copy-files'"
   },
