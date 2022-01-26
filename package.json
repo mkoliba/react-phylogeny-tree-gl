@@ -25,7 +25,7 @@
     ".": "./lib/index.js",
     "./plugins": "./lib/plugins",
     "./hooks": "./lib/hooks",
-    "./css/": "./lib/css/",
+    "./styles.css": "./lib/styles.css",
     "./utils": "./lib/utils.js",
     "./types/": "./lib/types/"
   },
@@ -53,7 +53,7 @@
   ],
   "scripts": {
     "clean": "rimraf lib/",
-    "copy-files": "copyfiles -f src/css/*.css lib/css/",
+    "copy-files": "copyfiles -f src/*.css lib/",
     "build": "tsc && yarn copy-files",
     "prepare": "yarn clean && yarn format && yarn build",
     "format": "prettier --write src && eslint src --ext .js,.jsx,.ts,.tsx",
