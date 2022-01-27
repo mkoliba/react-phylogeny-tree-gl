@@ -452,10 +452,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@phylocanvas/phylocanvas.gl@1.22.0":
-  version "1.22.0"
-  resolved "https://registry.yarnpkg.com/@phylocanvas/phylocanvas.gl/-/phylocanvas.gl-1.22.0.tgz#8605b86e26eba35ff1c8b016c2909a77ce4588ed"
-  integrity sha512-7gXa3FxdLVV9seOhb/qewRl2SeXPen3aURt/Srp+fzWeGTB7Fo/j+wHvQgq0/7j1He566OikR+PKfgfjLA/R+w==
+"@phylocanvas/phylocanvas.gl@1.36.0":
+  version "1.36.0"
+  resolved "https://registry.yarnpkg.com/@phylocanvas/phylocanvas.gl/-/phylocanvas.gl-1.36.0.tgz#03b3762c4d6bf6401a9335332644764c3ff7b95e"
+  integrity sha512-DzJ6tlHg/XXrKp6sA1MxLy2/3D3BWhvvzvj/n95/wB7CSZpTSSsQeeBY/PeXuHuET+p5lUTrIJ1OTITepjsqYQ==
 
 "@probe.gl/env@3.5.0":
   version "3.5.0"
