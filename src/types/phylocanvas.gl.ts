@@ -31,7 +31,7 @@ export type Phylocanvas<
   };
   layers: unknown[];
   view: HTMLDivElement;
-  props: Readonly<P & PhylocanvasProps & { source: Source }>;
+  props: Readonly<P & PhylocanvasProps>;
 } & M &
   PhylocanvasMethods<P>;
 
@@ -58,50 +58,54 @@ type RgbaArray = [number, number, number, number];
 type ColumnKey = string;
 
 export type PhylocanvasInitProps = { source: Source } & PhylocanvasProps;
-export type PhylocanvasProps = Partial<{
-  source: Source;
-  alignLabels: boolean;
-  blockHeaderFontSize: number;
-  blockLength: number;
-  blockPadding: number;
-  blocks: ColumnKey[];
-  branchZoom: number;
-  centre: [number, number];
-  collapsedIds: string[];
-  edgeOverlapFactor: number;
-  fillColour: RgbaArray;
-  fontColour: RgbaArray;
-  fontFamily: string;
-  fontSize: number;
-  haloRadius: number;
-  haloWidth: number;
-  highlightColour: RgbaArray;
-  interactive: boolean;
-  lineWidth: number;
-  metadata: { [leafID: string]: { [columnKey: string]: { colour: string; label: string } } };
-  nodeShape: Shape;
-  nodeSize: number;
-  padding: number;
-  rootId: string | null;
-  rotatedIds: string[];
-  selectedIds: string[];
-  shapeBorderAlpha: number;
-  shapeBorderWidth: number;
-  showBlockHeaders: boolean;
-  showBranchLengths: boolean;
-  showEdges: boolean;
-  showInternalLabels: boolean;
-  showLabels: boolean;
-  showLeafLabels: boolean;
-  showPiecharts: boolean;
-  showShapeBorders: boolean;
-  showShapes: boolean;
-  size: { height: number; width: number };
-  stepZoom: number;
-  strokeColour: RgbaArray;
-  styleLeafLabels: boolean;
-  styleNodeEdges: boolean;
-  styles: {
+export type PhylocanvasPropMetadata = {
+  [leafID: string]: { [columnKey: string]: { colour: string; label: string } };
+};
+export type PhylocanvasPropSize = { height: number; width: number; [key: string]: unknown };
+export type PhylocanvasProps = {
+  source?: Source;
+  alignLabels?: boolean;
+  blockHeaderFontSize?: number;
+  blockLength?: number;
+  blockPadding?: number;
+  blocks?: ColumnKey[];
+  branchZoom?: number;
+  centre?: [number, number];
+  collapsedIds?: string[];
+  edgeOverlapFactor?: number;
+  fillColour?: RgbaArray;
+  fontColour?: RgbaArray;
+  fontFamily?: string;
+  fontSize?: number;
+  haloRadius?: number;
+  haloWidth?: number;
+  highlightColour?: RgbaArray;
+  interactive?: boolean;
+  lineWidth?: number;
+  metadata?: PhylocanvasPropMetadata;
+  nodeShape?: Shape;
+  nodeSize?: number;
+  padding?: number;
+  rootId?: string | null;
+  rotatedIds?: string[];
+  selectedIds?: string[];
+  shapeBorderAlpha?: number;
+  shapeBorderWidth?: number;
+  showBlockHeaders?: boolean;
+  showBranchLengths?: boolean;
+  showEdges?: boolean;
+  showInternalLabels?: boolean;
+  showLabels?: boolean;
+  showLeafLabels?: boolean;
+  showPiecharts?: boolean;
+  showShapeBorders?: boolean;
+  showShapes?: boolean;
+  size?: PhylocanvasPropSize;
+  stepZoom?: number;
+  strokeColour?: RgbaArray;
+  styleLeafLabels?: boolean;
+  styleNodeEdges?: boolean;
+  styles?: {
     [nodeID: string]: {
       fillColour?: string | RgbaArray;
       shape?: Shape;
@@ -109,10 +113,10 @@ export type PhylocanvasProps = Partial<{
       [key: string]: unknown;
     };
   };
-  treeToCanvasRatio: number;
-  type: TreeType;
-  zoom: number;
-}>;
+  treeToCanvasRatio?: number;
+  type?: TreeType;
+  zoom?: number;
+};
 
 export type Layer = { id: string; [key: string]: unknown };
 

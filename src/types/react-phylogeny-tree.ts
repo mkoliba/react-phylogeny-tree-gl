@@ -34,13 +34,19 @@ export type Hooks<
 > = ((getTree: GetTree<P, M>, props: P) => void)[];
 
 export type GetTree<
-  P extends PhylocanvasInitProps,
-  M extends Record<string, (...args: unknown[]) => unknown>
+  P extends PhylocanvasInitProps = PhylocanvasInitProps,
+  M extends Record<string, (...args: unknown[]) => unknown> = Record<
+    string,
+    (...args: unknown[]) => unknown
+  >
 > = () => Phylocanvas<P, M> | null;
 
 export type PhylogenyTreeRef<
-  P extends PhylocanvasInitProps = PhylocanvasInitProps,
-  M extends Record<string, (...args: unknown[]) => unknown> = Record<string, never>
+  P extends PhylocanvasInitProps = PhylocanvasInitProps & Record<string, unknown>,
+  M extends Record<string, (...args: unknown[]) => unknown> = Record<
+    string,
+    (...args: unknown[]) => unknown
+  >
 > = {
   getTree: GetTree<P, M>;
 };
