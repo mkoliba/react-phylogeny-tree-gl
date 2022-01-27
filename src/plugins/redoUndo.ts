@@ -1,6 +1,6 @@
 import { Defaults } from '@phylocanvas/phylocanvas.gl';
 
-import { Phylocanvas, Decorate, PhylocanvasProps, Source } from '../types/phylocanvas.gl';
+import { Phylocanvas, Decorate, PhylocanvasProps } from '../types/phylocanvas.gl';
 import {
   UndoRedoProps,
   UndoRedoMethods,
@@ -133,7 +133,6 @@ const redo: UndoRedoMethod = (tree) => {
     past: [...past, present],
     future: future.slice(1),
   };
-
   save(tree, next, newHistory);
 };
 
@@ -147,6 +146,7 @@ const save = <
   newHistory: RedoUndoState,
   method?: (...args: MethodArgs<MN>) => unknown
 ) => {
+  
   callFn(newVal, newHistory, method ?? tree[newVal.method]);
   if (isMethodVal('setSource', newVal)) {
     if (newVal.props !== undefined)
@@ -194,7 +194,7 @@ function getArguments(
     const args: MethodArgs<'setSource'> = [data, original, true];
     return args;
   }
-  throw Error(`getArguments received arg present.method with unsoported value: ${newVal.method}`);
+  throw Error(`getArguments received arg present.method with unsupported value: ${newVal.method}`);
 }
 
 function isMethodVal<M extends RedoUndoHookedMethodsNames>(
@@ -224,7 +224,7 @@ function getPresent(props: UndoRedoProps & PhylocanvasProps, newVal: StateValue)
       props: historyProps,
     };
   }
-  throw Error(`getPresent received argument 'value' with unsuported method: ${newVal.method}`);
+  throw Error(`getPresent received argument 'value' with unsupported method: ${newVal.method}`);
 }
 
 function getSetPropsPresent(
@@ -248,12 +248,8 @@ function getSetSourcePresent(
   props: UndoRedoProps & PhylocanvasProps,
   _args: MethodArgs<'setSource'>
 ): [Record<string, unknown>, ...MethodArgs<'setSource'>] {
-  let presentOriginal: Source | undefined;
-  if (typeof props.source !== 'string') {
-    presentOriginal = props.source.original;
-  }
   const historyProps = pick(props, ['rootId', 'collapsedIds', 'rotatedIds']);
-  return [historyProps, props.source, presentOriginal];
+  return [historyProps, props.source];
 }
 
 function pick(obj: Record<string, unknown>, propNames: string[]): Record<string, unknown> {
