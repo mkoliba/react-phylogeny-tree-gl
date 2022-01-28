@@ -146,7 +146,6 @@ const save = <
   newHistory: RedoUndoState,
   method?: (...args: MethodArgs<MN>) => unknown
 ) => {
-  
   callFn(newVal, newHistory, method ?? tree[newVal.method]);
   if (isMethodVal('setSource', newVal)) {
     if (newVal.props !== undefined)
