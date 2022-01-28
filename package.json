@@ -1,6 +1,6 @@
 {
   "name": "react-phylogeny-tree-gl",
-  "version": "0.0.4",
+  "version": "1.0.0-beta",
   "description": "React integration of phylocanvas.gl. Component and hook for phylogenetic tree visualistion.",
   "author": "Martin Koliba",
   "license": "MIT",
